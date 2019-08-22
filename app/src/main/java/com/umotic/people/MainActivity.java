@@ -2,6 +2,8 @@ package com.umotic.people;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -9,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,10 +26,16 @@ public class MainActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*Fragment newFragment = new MapFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
+        //transaction.replace(R.id.fragment, newFragment);
+
+// Commit the transaction
+        //transaction.commit();
+*/
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         setContentView(R.layout.activity_main);
@@ -41,7 +50,15 @@ public class MainActivity extends AppCompatActivity {
 
         getUserPosition();
 
+        getWorldPosition();
+    }
 
+    private void getWorldPosition() {
+
+
+        //TODO : select all position from DB
+        //TODO : insert user position in DB
+        //TODO : display the list of position in the map
     }
 
     //Get GPS user location
@@ -77,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     //Start button animation
     private void startButtonAnim( Button bounceButtonSearch){
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
-        MyBounceInterpolator interpolator = new MyBounceInterpolator(0, 20);
+        MyBounceInterpolator interpolator = new MyBounceInterpolator(0, 30);
         myAnim.setInterpolator(interpolator);
         myAnim.setDuration(5000);
 
