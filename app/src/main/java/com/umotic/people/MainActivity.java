@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void didTapButton(View view) {
-        Button bounceButtonSearch = (Button) findViewById(R.id.bounceButtonSearch);
+        Button bounceButtonSearch = findViewById(R.id.bounceButtonSearch);
 
         startButtonAnim(bounceButtonSearch);
 

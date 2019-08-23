@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.internal.ICameraUpdateFactoryDelegate;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
@@ -36,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
+    GoogleMap googleMap;
     SharedPreferences sharedPref;
     SupportMapFragment mapFragment;
     public MapFragment()
@@ -62,25 +65,49 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return v;
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
 
-        String lon = sharedPref.getString("lon", "0");
-        String lat = sharedPref.getString("lat", "0");
+    //TODO : ciclo viene effettuato solo una volta
+    @Override
+    public void onResume () {
+
+        super.onResume();
+
+        Handler handler = new Handler();
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                String lon = sharedPref.getString("lon", "0");
+                String lat = sharedPref.getString("lat", "0");
+
+                Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
+                LatLng pos = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
+                //googleMap.setMyLocationEnabled(true);
+                CameraUpdate location = CameraUpdateFactory.newLatLngZoom(pos, 15);
+                googleMap.animateCamera(location);
+
+                if (!googleMap.isMyLocationEnabled()) {
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.gps3);
+                    Bitmap gps = Bitmap.createScaledBitmap(bitmap, 80, 80, true);
+
+                    googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gps)).position(pos));
+                    googleMap.setMapType(1);
+
+                }
+
+            }
+        };
+        handler.postDelayed(r,4);
+
+
+
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+        this.googleMap=googleMap;
         googleMap.setMaxZoomPreference(16);
 
 
-        //Toast.makeText(getContext(), lon+" -- "+lat, Toast.LENGTH_SHORT).show();
-        LatLng pos = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
-        //googleMap.setMyLocationEnabled(true);
-        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(pos, 15);
-        googleMap.animateCamera(location);
-
-        if(!googleMap.isMyLocationEnabled()) {
-            Bitmap bitmap =  BitmapFactory.decodeResource(getResources(), R.drawable.gps3);
-            Bitmap gps = Bitmap.createScaledBitmap(bitmap, 80, 80, true);
-
-            googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gps)).position(pos));
-        }
     }
 }
