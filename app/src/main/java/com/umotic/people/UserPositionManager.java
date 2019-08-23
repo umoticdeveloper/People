@@ -4,18 +4,15 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,6 +28,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
     private Location mLocation;
     private LocationManager mLocationManager;
 
+    LatLng latLng;
     private LocationRequest mLocationRequest;
     private com.google.android.gms.location.LocationListener listener;
     private long UPDATE_INTERVAL = 1000;  /* 10 secs */
@@ -50,8 +48,8 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
         mLocationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 
-        checkLocation(); //check whether location service is enable or not in your  phone
-        start();
+        //checkLocation(); //check whether location service is enable or not in your  phone
+
     }
 
     @Override
@@ -62,33 +60,17 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
             // Permission is not granted
             // Should we show an explanation?
-            new AlertDialog.Builder(context)
-                    .setTitle("Necessario accesso alla Posizione ")
-                    .setMessage("E' necessario attivare la geolocalizzazione per quest' app")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-                        }
-                    })
-                    .setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    }).create().show();
+           showAlert_2();
 
         } else {
             //Arready have permission
-
 
             startLocationUpdates();
 
             mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
             if (mLocation == null) {
-                
+
                 startLocationUpdates();
             }
             if (mLocation != null) {
@@ -143,11 +125,19 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            Log.d("reques", "--->>>>>");
             return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
                 mLocationRequest, this);
         Log.d("reque", "--->>>>");
+
+    }
+
+    //write current User position in DB
+    private void dbUserUpdater() {
+        //TODO : write user position in DB
+        //Toast.makeText(context, "DB", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -156,9 +146,21 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         // You can now create a LatLng Object for use with maps
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        //latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        sharedLastUserPosition(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()));
+        dbUserUpdater();
+    }
+
+    private void sharedLastUserPosition(String lat, String lon) {
+
+        SharedPreferences sharedPref =  ((Activity) context).getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putString("lon", lon);
+        editor.putString("lat", lat);
+        editor.commit();
     }
 
     private boolean checkLocation() {
@@ -169,25 +171,26 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
     }
 
     private void showAlert() {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-        dialog.setTitle("Enable Location")
-                .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
-                        "use this app")
-                .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(context)
+                .setTitle("Necessario accesso alla Posizione ")
+                .setMessage("E' necessario attivare la geolocalizzazione per quest' app")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        context.startActivity(myIntent);
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                     }
-                });
-        dialog.show();
+                }).create().show();
+    }
+
+    private void showAlert_2() {
+        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
 
     private boolean isLocationEnabled() {

@@ -2,6 +2,10 @@ package com.umotic.people;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -9,16 +13,21 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 
 public class MainActivity extends AppCompatActivity {
 
     UserPositionManager userPositionManager;
 
+    private FragmentTransaction transaction;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        userPositionManager = new UserPositionManager(this);
         setContentView(R.layout.activity_main);
+        writeUserPosition();
     }
 
 
@@ -28,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         startButtonAnim(bounceButtonSearch);
 
-        getUserPosition();
+
 
         getWorldPosition();
     }
@@ -36,15 +45,14 @@ public class MainActivity extends AppCompatActivity {
     private void getWorldPosition() {
 
         //TODO : select all position from DB
-        //TODO : insert user position in DB
         //TODO : display the list of position in the map
     }
 
     //Get GPS user location
     //The position is refreshed only with user moves
 
-    private void getUserPosition() {
-        userPositionManager = new UserPositionManager(this);
+    private void writeUserPosition() {
+        userPositionManager.start();
     }
 
     //Start button animation
