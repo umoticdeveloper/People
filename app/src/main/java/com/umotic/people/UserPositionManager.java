@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -60,29 +62,42 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
             // Permission is not granted
             // Should we show an explanation?
+            new AlertDialog.Builder(context)
+                    .setTitle("Necessario accesso alla Posizione ")
+                    .setMessage("E' necessario attivare la geolocalizzazione per quest' app")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
+                        }
+                    })
+                    .setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create().show();
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            Toast.makeText(context, "Concedi permessi sulla Posizione", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-        startLocationUpdates();
-
-        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if(mLocation == null){
-            startLocationUpdates();
-        }
-        if (mLocation != null) {
-
-            //mLatitudeTextView.setText(String.valueOf(mLocation.getLatitude()));
-            //mLongitudeTextView.setText(String.valueOf(mLocation.getLongitude()));
         } else {
-            //Toast.makeText(context, "Location not Detected", Toast.LENGTH_SHORT).show();
+            //Arready have permission
+
+
+            startLocationUpdates();
+
+            mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+            if (mLocation == null) {
+                
+                startLocationUpdates();
+            }
+            if (mLocation != null) {
+
+                //mLatitudeTextView.setText(String.valueOf(mLocation.getLatitude()));
+                //mLongitudeTextView.setText(String.valueOf(mLocation.getLongitude()));
+            } else {
+                //Toast.makeText(context, "Location not Detected", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

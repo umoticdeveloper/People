@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Get GPS user location
+    //The position is refreshed only with user moves
 
     private void getUserPosition() {
         userPositionManager = new UserPositionManager(this);
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         bounceButtonSearch.startAnimation(myAnim);
     }
 
+    //The position tracking stops only when the app is closed
     @Override
     protected void onDestroy() {
         super.onDestroy();
