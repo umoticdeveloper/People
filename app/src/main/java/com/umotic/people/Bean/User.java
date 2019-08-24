@@ -10,6 +10,7 @@ public class User {
     private String userSex;
     private int userAge;
     private int userIsSpecialGuest;
+    private UserPosition userPosition;
 
     /**
      * Constructors definitions
@@ -49,7 +50,15 @@ public class User {
         this.userIsSpecialGuest = userIsSpecialGuest;
     }
 
+    public UserPosition getUserPosition() {
+        return userPosition;
+    }
+
+    public void setUserPosition(UserPosition userPosition) {
+        this.userPosition = userPosition;
+    }
+
     public String toString() {
-        return "User is " + getUserAge() + " years old, is " + getUserSex() + ". VIP check: " + getUserIsSpecialGuest();
+        return "User is " + getUserAge() + " years old, is " + getUserSex() + ". VIP check: " + getUserIsSpecialGuest() + "User LonLat: " + userPosition.getLongitude() + " , " + userPosition.getLatitude();
     }
 }
