@@ -146,7 +146,9 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+
+//Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+
         // You can now create a LatLng Object for use with maps
         //latLng = new LatLng(location.getLatitude(), location.getLongitude());
         sharedLastUserPosition(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()));

@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO : select all position from DB
         //TODO : display the list of position in the map
+        MapFragment.displayWorldLocations();
+
     }
 
     //Get GPS user location
