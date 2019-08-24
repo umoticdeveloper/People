@@ -11,15 +11,14 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.umotic.people.Bean.UserPosition;
 
 public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -134,10 +133,14 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
     }
 
-    //write current User position in DB
-    private void dbUserUpdater() {
+    /**
+     * PRESA IN CARICO DA FEDERICO SCHIAVONE: GESTIONE DATI CON FIREBASE
+     * @param location
+     */
+    private void dbUserUpdater(Location location) {
         //TODO : write user position in DB
-        //Toast.makeText(context, "DB", Toast.LENGTH_SHORT).show();
+        UserPosition userPosition = new UserPosition();
+
     }
 
     @Override
@@ -152,7 +155,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         // You can now create a LatLng Object for use with maps
         //latLng = new LatLng(location.getLatitude(), location.getLongitude());
         sharedLastUserPosition(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()));
-        dbUserUpdater();
+        dbUserUpdater(location);
     }
 
     private void sharedLastUserPosition(String lat, String lon) {
