@@ -22,7 +22,6 @@ import com.umotic.people.Bean.UserPosition;
 
 public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
-
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private LocationManager mLocationManager;
@@ -51,6 +50,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
     }
 
+    //Controlla se sono presenti i permessi della posizione, se ottenuti avvia la startLocationUpdate()
     @Override
     public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -109,6 +109,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         }
     }
 
+    //Get GPS location
     protected void startLocationUpdates() {
         // Create the location request
         mLocationRequest = LocationRequest.create()
@@ -143,6 +144,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
     }
 
+    //Quando avviene un cambiamento di posizione
     @Override
     public void onLocationChanged(Location location) {
 
@@ -158,6 +160,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         dbUserUpdater(location);
     }
 
+    //ultima posizione nota condivisa nelle shared
     private void sharedLastUserPosition(String lat, String lon) {
 
         SharedPreferences sharedPref =  ((Activity) context).getPreferences(Context.MODE_PRIVATE);
@@ -168,6 +171,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         editor.commit();
     }
 
+
     private boolean checkLocation() {
 
         if(!isLocationEnabled())
@@ -175,6 +179,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         return isLocationEnabled();
     }
 
+    //mostra dialogo esteso richiesta permessi gps
     private void showAlert() {
         new AlertDialog.Builder(context)
                 .setTitle("Necessario accesso alla Posizione ")
@@ -194,6 +199,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
                 }).create().show();
     }
 
+    //mostra direttamente la richiesta permessi
     private void showAlert_2() {
         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
