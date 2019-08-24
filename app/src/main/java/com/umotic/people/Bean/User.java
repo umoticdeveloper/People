@@ -7,10 +7,13 @@ public class User {
     /**
      * Variables definitions
      */
+
+    private int ID;
     private String userSex;
     private int userAge;
     private int userIsSpecialGuest;
     private UserPosition userPosition;
+
 
     /**
      * Constructors definitions
@@ -19,12 +22,20 @@ public class User {
 
     }
 
-
     /**
      * #############################################################################################
      * #                                   METHODS DEFINITION                                      #
      * #############################################################################################
      */
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
 
     public String getUserSex() {
         return userSex;
