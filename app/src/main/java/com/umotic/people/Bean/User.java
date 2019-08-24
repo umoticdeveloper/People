@@ -1,4 +1,7 @@
 package com.umotic.people.Bean;
+
+import java.util.Date;
+
 /**
  * This class is used to generate a new User
  */
@@ -9,7 +12,11 @@ public class User {
      */
     private String userSex;
     private int userAge;
-    private int userIsSpecialGuest;
+    private boolean userIsSpecialGuest;
+    private String latitude;
+    private String longitude;
+    private String cityName;
+    private Date lastTimePositionUpdate;
 
     /**
      * Constructors definitions
@@ -41,15 +48,49 @@ public class User {
         this.userAge = userAge;
     }
 
-    public int getUserIsSpecialGuest() {
+    public boolean getUserIsSpecialGuest() {
         return userIsSpecialGuest;
     }
 
-    public void setUserIsSpecialGuest(int userIsSpecialGuest) {
+    public void setUserIsSpecialGuest(boolean userIsSpecialGuest) {
         this.userIsSpecialGuest = userIsSpecialGuest;
     }
 
-    public String toString() {
-        return "User is " + getUserAge() + " years old, is " + getUserSex() + ". VIP check: " + getUserIsSpecialGuest();
+    public String getLatitude() {
+        return latitude;
     }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public Date getLastTimePositionUpdate() {
+        return lastTimePositionUpdate;
+    }
+
+    public void setLastTimePositionUpdate(Date lastTimePositionUpdate) {
+        this.lastTimePositionUpdate = lastTimePositionUpdate;
+    }
+
+
+    public String toString() {
+        return "User: \nAge: " + getUserAge() + "\nSex: " + getUserSex() + "\nIs VIP: " + getUserIsSpecialGuest() + "\nLat: " + getLatitude() + "\nLon: " + getLongitude() + "\nCity: " + getCityName() + "\nLast time update: " + getLastTimePositionUpdate();
+    }
+
 }

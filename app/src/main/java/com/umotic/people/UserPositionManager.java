@@ -10,7 +10,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import com.google.android.gms.common.ConnectionResult;
@@ -18,7 +17,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.umotic.people.Bean.UserPosition;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.umotic.people.Bean.User;
+import com.umotic.people.dataproviders.DpUserInfo;
+
+import java.util.Calendar;
 
 public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -33,9 +38,9 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
     private long UPDATE_INTERVAL = 1000;  /* 10 secs */
     private long FASTEST_INTERVAL = 2000; /* 2 sec */
     private LocationManager locationManager;
-
+    User user = new User();
     Context context;
-
+    DpUserInfo dpUserInfo = new DpUserInfo(context);
     protected UserPositionManager(Context c) {
 
         context = c;
@@ -139,8 +144,21 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
      */
     private void dbUserUpdater(Location location) {
         //TODO : write user position in DB
-        UserPosition userPosition = new UserPosition();
+        FirebaseApp.initializeApp(context);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("User");
+        user.setLatitude(String.valueOf(location.getLatitude()));
+        user.setLongitude(String.valueOf(location.getLongitude()));
+        //TODO: capire come si prende il nome della città
+        user.setCityName("Torremaggiore");
+        user.setUserAge(22);
+        user.setUserSex("m".toUpperCase());
+        user.setUserIsSpecialGuest(false);
+        user.setLastTimePositionUpdate(Calendar.getInstance().getTime());
 
+        //TODO: CAPIRE SE E' MEGLIO USARE UN DATAPROVIDER O LASCIARE COSI' COM'E' PERCHE' COL DP CREA A LOOP TANTI UTENTI OGNI VOLTA CHE CAMBIA LA POSIZIONE.
+        //dpUserInfo.insertUserInfo(user);
+        databaseReference.setValue(user);
     }
 
     @Override
@@ -150,7 +168,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
 
-//Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 
         // You can now create a LatLng Object for use with maps
         //latLng = new LatLng(location.getLatitude(), location.getLongitude());
