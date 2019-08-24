@@ -61,7 +61,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         mapFragment.getMapAsync(this);
+
+        //inizializza i marker del gps con gli sprite colorati
         prepareWordsIcons();
+
         return v;
     }
 
@@ -72,6 +75,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onResume();
    }
 
+    //appena la mappa è pronta effettua operazioni preliminari
+    //stile mappa, telecamera posizionata sull'utente,
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         this.googleMap=googleMap;
@@ -102,6 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    //mostra sulla mappa gli sprite
     public static void displayWorldLocations() {
 
         googleMap.clear();
@@ -136,6 +142,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    //inizializza i marker del gps con gli sprite colorati (M & F)
     private void prepareWordsIcons() {
 
         Bitmap bitmapM = BitmapFactory.decodeResource(getResources(), R.drawable.generic);
@@ -147,6 +154,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    //Definisce le posizioni da attribuire ai marker (sprite colorati)
     private static ArrayList<String> fillWorldLPositions(ArrayList<String> al) {
 
 
