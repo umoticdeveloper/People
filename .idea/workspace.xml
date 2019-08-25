@@ -16,19 +16,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fc34f31-7f8c-4902-9997-1214177d183f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_gif_android_gif_drawable_1_2_17_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_relinker_relinker_1_3_1_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/umotic/people/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/umotic/people/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/umotic/people/MapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/umotic/people/MapFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -130,8 +120,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/umotic/people/MapFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="163" column="129" lean-forward="true" selection-start-line="163" selection-start-column="129" selection-end-line="163" selection-end-column="129" />
+            <state relative-caret-position="179">
+              <caret line="136" column="45" selection-start-line="136" selection-start-column="45" selection-end-line="136" selection-end-column="45" />
               <folding>
                 <element signature="e#1198#1206#0" expanded="true" />
                 <element signature="e#2395#2723#0" expanded="true" />
@@ -638,7 +628,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566726650357</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="- Saverio&#10; Thread for manage markers">
+      <created>1566739752678</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1566739752678</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView">
@@ -732,7 +729,8 @@
     <MESSAGE value="- Saverio&#10;Commenti" />
     <MESSAGE value="- Saverio&#10;Animation icon - testing" />
     <MESSAGE value="- Saverio&#10;bug fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Saverio&#10;bug fix" />
+    <MESSAGE value="- Saverio&#10; Thread for manage markers" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Saverio&#10; Thread for manage markers" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-29/android.jar!/android/view/animation/Animation.class">
@@ -1005,8 +1003,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/umotic/people/MapFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="163" column="129" lean-forward="true" selection-start-line="163" selection-start-column="129" selection-end-line="163" selection-end-column="129" />
+        <state relative-caret-position="179">
+          <caret line="136" column="45" selection-start-line="136" selection-start-column="45" selection-end-line="136" selection-end-column="45" />
           <folding>
             <element signature="e#1198#1206#0" expanded="true" />
             <element signature="e#2395#2723#0" expanded="true" />

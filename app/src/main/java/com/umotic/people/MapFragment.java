@@ -127,12 +127,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onCameraIdle() {
                 Float zoom = googleMap.getCameraPosition().zoom;
 
-                Log.d("camera",200/zoom.intValue()+" -> ZOOM: "+zoom.toString());
 
-                    //12 zoom = 20 px
-                    //
-                    modifyWordsIcons(2000/zoom.intValue(),2000/zoom.intValue());
 
+                    //13 zoom = 20 px
+                    //10 zoom = 14 px
+                    //33 zoom = 12 px
+                    //2  zoom =  0 px
+
+                    int dimensione = (int) (2*Math.pow(zoom.doubleValue(),2));
+
+                    modifyWordsIcons(dimensione,dimensione);
+
+                    Log.d("camera",dimensione+" -> ZOOM: "+zoom.toString());
 
                 displayWorldLocations();
             }
