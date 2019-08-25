@@ -4,6 +4,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -13,6 +15,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import java.io.IOException;
+
+import pl.droidsonroids.gif.GifDecoder;
+import pl.droidsonroids.gif.GifImageView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         userPositionManager = new UserPositionManager(this);
         setContentView(R.layout.activity_main);
+
+
 
     }
 
@@ -56,9 +64,16 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO : select all position from DB
         //TODO : display the list of position in the map
+
+        MapFragment.fillWorldLPositions();
         MapFragment.displayWorldLocations();
 
     }
+
+
+
+
+
 
     //Get GPS user location
     //The position is refreshed only with user moves
@@ -83,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
 
         userPositionManager.stop();
+
 
     }
 

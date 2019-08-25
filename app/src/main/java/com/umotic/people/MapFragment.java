@@ -6,17 +6,14 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,7 +21,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -36,6 +32,8 @@ import java.util.Random;
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
+
+    static ArrayList<String> positions = new ArrayList<String>();
     static Bitmap gpsM;
     static Bitmap gpsF;
     static Bitmap gpsG;
@@ -73,21 +71,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public void onResume() {
-        super.onResume();
+    //TODO : il ciclo funziona ma non riesco ad adnimare i marker
+    public static void test() {
 
         new Thread(new Runnable() {
             public void run() {
 
                 while (true) {
 
-                        Log.d("VEMO", "venow");
-                        //animateMarker(marker);
-                        //Toast.makeText(MainActivity.class, "Ase", Toast.LENGTH_SHORT).show();
+                    //MapFragment.displayWorldLocations();
 
+                    //animateMarker(marker);
+                    //Toast.makeText(MainActivity.class, "Ase", Toast.LENGTH_SHORT).show();
+                }
                 }
             }
-        }).start();
+        ).start();
 
     }
 
@@ -123,6 +122,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         Toast.makeText(getContext(), "THREAD not custom-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
 
+        googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                Float zoom = googleMap.getCameraPosition().zoom;
+
+                Log.d("camera",200/zoom.intValue()+" -> ZOOM: "+zoom.toString());
+
+                    //12 zoom = 20 px
+                    //
+                    modifyWordsIcons(2000/zoom.intValue(),2000/zoom.intValue());
+
+
+                displayWorldLocations();
+            }
+        });
+
     }
 
     //mostra sulla mappa gli sprite
@@ -130,98 +145,129 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         googleMap.clear();
         //world positions
-        ArrayList<String> al = new ArrayList<String>();
-        //fill array with world positions
-        al = fillWorldLPositions(al);
 
-        //cicla tutte le pos e metti i marker come sprite rossi
+
+        // cicla tutte le pos e metti i marker come sprite rossi
         // inventa pos
         //Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
-        if (al != null && al.size() > 1) {
+        if (positions != null && positions.size() > 1) {
 
 
-            for (String position : al) {
+            for (String position : positions) {
                 String[] worldposition = position.split(",");
                 //Toast.makeText(, "mostrando pose", Toast.LENGTH_SHORT).show();
 
                 LatLng wPos = new LatLng(Double.parseDouble(worldposition[0]), Double.parseDouble(worldposition[1]));
 
                 if ("M".equals(worldposition[2])) {
-                    Log.d("MALE", "famale");
-                    googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsM)).position(wPos).anchor(0.5f, 0.5f).alpha(1f));
+                    //Log.d("MALE", "famale");
+                    googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsM)).position(wPos).anchor(0.5f, 0.5f).alpha(1f).flat(true));
                 }
                 if ("F".equals(worldposition[2])) {
-                    Log.d("FEMALE", "female");
+                   // Log.d("FEMALE", "female");
 
-                    googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsF)).position(wPos).anchor(0.5f, 0.5f).alpha(1f));
+                    googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsF)).position(wPos).anchor(0.5f, 0.5f).alpha(1f).flat(true));
                 }
                 if ("G".equals(worldposition[2])) {
-                    Log.d("Generic", "female");
+                    //Log.d("Generic", "female");
 
 
-                    // Marker marker = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsCustom)).position(wPos).anchor(0.5f, 0.5f).alpha(1f));
+                    googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsG)).position(wPos).anchor(0.5f, 0.5f).alpha(1f).flat(true));
 
-                    Marker marker = googleMap.addMarker(new MarkerOptions()
+               /*     Marker marker = googleMap.addMarker(new MarkerOptions()
                             .position(wPos)
                             .title("San Francisco")
                             .snippet("Population: 776733")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
-
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.fromResource(gpsCustom))));
+*/
                 }
 
             }
+
+
+
         } else {
             //Toast.makeText(getContext(), "nulla da mostrare", Toast.LENGTH_SHORT).show();
         }
 
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+
+
     //inizializza i marker del gps con gli sprite colorati (M & F)
     private void prepareWordsIcons() {
 
         Bitmap bitmapM = BitmapFactory.decodeResource(getResources(), R.drawable.male);
-        gpsM = Bitmap.createScaledBitmap(bitmapM, 200, 200, true);
+        gpsM = Bitmap.createScaledBitmap(bitmapM, 400, 400, true);
 
 
         Bitmap bitmapF = BitmapFactory.decodeResource(getResources(), R.drawable.fm);
-        gpsF = Bitmap.createScaledBitmap(bitmapF, 200, 200, true);
+        gpsF = Bitmap.createScaledBitmap(bitmapF, 400, 400, true);
 
 
         Bitmap bitmapG = BitmapFactory.decodeResource(getResources(), R.drawable.generic);
-        gpsG = Bitmap.createScaledBitmap(bitmapG, 200, 200, true);
+        gpsG = Bitmap.createScaledBitmap(bitmapG, 400, 400, true);
 
         Bitmap bitmapCustom = BitmapFactory.decodeResource(getResources(), R.drawable.gps1);
         gpsCustom = Bitmap.createScaledBitmap(bitmapCustom, 200, 200, true);
 
     }
 
-    //Definisce le posizioni da attribuire ai marker (sprite colorati)
-    private static ArrayList<String> fillWorldLPositions(ArrayList<String> al) {
+
+
+    private void modifyWordsIcons(int x,int y) {
+
+        Bitmap bitmapM = BitmapFactory.decodeResource(getResources(), R.drawable.male);
+        gpsM = Bitmap.createScaledBitmap(bitmapM, x, y, true);
+
+
+        Bitmap bitmapF = BitmapFactory.decodeResource(getResources(), R.drawable.fm);
+        gpsF = Bitmap.createScaledBitmap(bitmapF, x, y, true);
+
+
+        Bitmap bitmapG = BitmapFactory.decodeResource(getResources(), R.drawable.generic);
+        gpsG = Bitmap.createScaledBitmap(bitmapG, x, y, true);
+
+        Bitmap bitmapCustom = BitmapFactory.decodeResource(getResources(), R.drawable.gps1);
+        gpsCustom = Bitmap.createScaledBitmap(bitmapCustom, x, y, true);
+
+    }
+
+
+
+    //Definisce le posizioni da attribuire ai marker, chiamato dal main(sprite colorati)
+    public static void fillWorldLPositions() {
+        positions.clear();
 
 
         //Ferrarese
-        for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
-            al.add("41.12231423338676,16.86048149602925,M");
+        for(int a =1;a<(new Random().nextInt(15 - 1) + 4);a++) {
+            positions.add("41.12231423338676,16.86048149602925,G");
+
         }
 
         //"00.00010000000000,00.00010000000000"
-        al.add("41.12241423338676,16.86058149602925,G");
-        al.add("41.12241423338676,16.86058149602925,F");
-        al.add("41.12241423338676,16.86058149602925,F");
+        positions.add("41.12241423338676,16.86058149602925,M");
+        positions.add("41.12241423338676,16.86058149602925,F");
+        positions.add("41.12241423338676,16.86058149602925,M");
 
         //Politecnico
         for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
 
-            al.add("41.10907370571775,16.878347396850586,F");
+            positions.add("41.10907370571775,16.878347396850586,G");
         }
         //postaccio
         for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
 
-            al.add("41.11148,16.8554,M");
+            positions.add("41.11148,16.8554,G");
         }
-
-        return al;
     }
 
 
