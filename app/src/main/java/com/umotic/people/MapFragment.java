@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     static Bitmap gpsM;
     static Bitmap gpsF;
+    static Bitmap gpsG;
+    static Bitmap gpsCustom;
 
     static GoogleMap googleMap;
     SharedPreferences sharedPref;
@@ -69,11 +73,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    //TODO : ciclo viene effettuato solo una volta
-    @Override
-    public void onResume () {
+    public void onResume() {
         super.onResume();
-   }
+
+        new Thread(new Runnable() {
+            public void run() {
+
+                while (true) {
+
+                        Log.d("VEMO", "venow");
+                        //animateMarker(marker);
+                        //Toast.makeText(MainActivity.class, "Ase", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }).start();
+
+    }
+
+
 
     //appena la mappa è pronta effettua operazioni preliminari
     //stile mappa, telecamera posizionata sull'utente,
@@ -116,41 +134,65 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //fill array with world positions
         al = fillWorldLPositions(al);
 
-                //cicla tutte le pos e metti i marker come sprite rossi
-                // inventa pos
-                //Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
-                if(al != null && al.size()>1) {
+        //cicla tutte le pos e metti i marker come sprite rossi
+        // inventa pos
+        //Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
+        if (al != null && al.size() > 1) {
 
 
-                    for (String position : al) {
-                        String[] latlon = position.split(",");
-                        //Toast.makeText(, "mostrando pose", Toast.LENGTH_SHORT).show();
+            for (String position : al) {
+                String[] worldposition = position.split(",");
+                //Toast.makeText(, "mostrando pose", Toast.LENGTH_SHORT).show();
 
-                        LatLng wPos = new LatLng(Double.parseDouble(latlon[0]), Double.parseDouble(latlon[1]));
+                LatLng wPos = new LatLng(Double.parseDouble(worldposition[0]), Double.parseDouble(worldposition[1]));
+
+                if ("M".equals(worldposition[2])) {
+                    Log.d("MALE", "famale");
+                    googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsM)).position(wPos).anchor(0.5f, 0.5f).alpha(1f));
+                }
+                if ("F".equals(worldposition[2])) {
+                    Log.d("FEMALE", "female");
+
+                    googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsF)).position(wPos).anchor(0.5f, 0.5f).alpha(1f));
+                }
+                if ("G".equals(worldposition[2])) {
+                    Log.d("Generic", "female");
 
 
-                        googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsM)).position(wPos).anchor(0.5f,0.5f));
+                    // Marker marker = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsCustom)).position(wPos).anchor(0.5f, 0.5f).alpha(1f));
+
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
+                            .position(wPos)
+                            .title("San Francisco")
+                            .snippet("Population: 776733")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
 
-                    }
-                }else{
-                    //Toast.makeText(getContext(), "nulla da mostrare", Toast.LENGTH_SHORT).show();
                 }
 
-
-
+            }
+        } else {
+            //Toast.makeText(getContext(), "nulla da mostrare", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
     //inizializza i marker del gps con gli sprite colorati (M & F)
     private void prepareWordsIcons() {
 
-        Bitmap bitmapM = BitmapFactory.decodeResource(getResources(), R.drawable.generic);
+        Bitmap bitmapM = BitmapFactory.decodeResource(getResources(), R.drawable.male);
         gpsM = Bitmap.createScaledBitmap(bitmapM, 200, 200, true);
 
 
         Bitmap bitmapF = BitmapFactory.decodeResource(getResources(), R.drawable.fm);
         gpsF = Bitmap.createScaledBitmap(bitmapF, 200, 200, true);
+
+
+        Bitmap bitmapG = BitmapFactory.decodeResource(getResources(), R.drawable.generic);
+        gpsG = Bitmap.createScaledBitmap(bitmapG, 200, 200, true);
+
+        Bitmap bitmapCustom = BitmapFactory.decodeResource(getResources(), R.drawable.gps1);
+        gpsCustom = Bitmap.createScaledBitmap(bitmapCustom, 200, 200, true);
 
     }
 
@@ -160,23 +202,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         //Ferrarese
         for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
-            al.add("41.12231423338676,16.86048149602925");
+            al.add("41.12231423338676,16.86048149602925,M");
         }
+
+        //"00.00010000000000,00.00010000000000"
+        al.add("41.12241423338676,16.86058149602925,G");
+        al.add("41.12241423338676,16.86058149602925,F");
+        al.add("41.12241423338676,16.86058149602925,F");
+
         //Politecnico
         for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
 
-            al.add("41.10907370571775,16.878347396850586");
+            al.add("41.10907370571775,16.878347396850586,F");
         }
         //postaccio
         for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
 
-            al.add("41.11148,16.8554");
+            al.add("41.11148,16.8554,M");
         }
-
-
 
         return al;
     }
+
 
 
 }

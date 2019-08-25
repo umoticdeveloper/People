@@ -50,6 +50,9 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
     }
 
+
+
+
     //Controlla se sono presenti i permessi della posizione, se ottenuti avvia la startLocationUpdate()
     @Override
     public void onConnected(Bundle bundle) {

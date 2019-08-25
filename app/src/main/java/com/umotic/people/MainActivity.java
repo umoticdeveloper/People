@@ -6,12 +6,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -23,11 +30,22 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentTransaction transaction;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userPositionManager = new UserPositionManager(this);
         setContentView(R.layout.activity_main);
-        writeUserPosition();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void vibration(boolean active) {
+
+        if(active){
+            Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+            vibrator.vibrate(VibrationEffect.createOneShot(25, VibrationEffect.DEFAULT_AMPLITUDE));
+        }
+
     }
 
 
@@ -35,9 +53,10 @@ public class MainActivity extends AppCompatActivity {
     public void didTapButton(View view) {
         Button bounceButtonSearch = findViewById(R.id.bounceButtonSearch);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibration(true);
+        }
         startButtonAnim(bounceButtonSearch);
-
-
 
         getWorldPosition();
     }
@@ -74,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
         userPositionManager.stop();
 
-
     }
+
+
+
+
 }
