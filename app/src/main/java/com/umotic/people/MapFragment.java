@@ -127,8 +127,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onCameraIdle() {
                 Float zoom = googleMap.getCameraPosition().zoom;
 
-
-
                     //13 zoom = 20 px
                     //10 zoom = 14 px
                     //33 zoom = 12 px
@@ -138,9 +136,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     modifyWordsIcons(dimensione,dimensione);
 
-                    Log.d("camera",dimensione+" -> ZOOM: "+zoom.toString());
+                    //Log.d("camera",dimensione+" -> ZOOM: "+zoom.toString());
+
+
 
                 displayWorldLocations();
+
+
+
+
+
             }
         });
 

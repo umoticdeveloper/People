@@ -22,6 +22,24 @@
         app:layout_constraintVertical_bias="0.981" />
 
 
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImageView2"
+        android:layout_width="266dp"
+
+
+        android:layout_height="127dp"
+        android:adjustViewBounds="true"
+        android:elevation="10dp"
+        android:focusable="false"
+        android:scaleType="centerCrop"
+        android:src="@drawable/loaderhalf"
+        app:layout_constraintBottom_toBottomOf="@+id/fragment"
+
+        app:layout_constraintEnd_toEndOf="@+id/fragment"
+        app:layout_constraintStart_toStartOf="@+id/fragment"
+        app:layout_constraintTop_toTopOf="@+id/fragment"
+        app:layout_constraintVertical_bias="1.0" />
+
     <fragment
         android:id="@+id/fragment"
         android:name="com.umotic.people.MapFragment"
@@ -33,11 +51,9 @@
         android:layout_marginBottom="113dp"
         app:layout_constraintBottom_toTopOf="@+id/bounceButtonSearch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.527" />
-
+        app:layout_constraintVertical_bias="0.516" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,5 +36,6 @@ dependencies {
     //TODO : errore "File 'Z:\Users\User\StudioProjects\People\app\google-services.json' specified for property 'quickstartFile' does not exist."
     //TODO RISOLTO : ELIMINATA CHIAVE SHA1 E RESO IL PROGETTO GENERICO DA CONSOLLE FIREBASE, AGGIUNTO A GIT IL FILE "google-services.json"
     implementation 'com.google.firebase:firebase-database:19.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
 }

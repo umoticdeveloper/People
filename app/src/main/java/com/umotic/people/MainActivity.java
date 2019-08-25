@@ -14,16 +14,18 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.Toast;
 
-import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import pl.droidsonroids.gif.GifDecoder;
 import pl.droidsonroids.gif.GifImageView;
 
 
 public class MainActivity extends AppCompatActivity {
 
     UserPositionManager userPositionManager;
+    GifImageView loader;
 
     private FragmentTransaction transaction;
 
@@ -32,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         userPositionManager = new UserPositionManager(this);
         setContentView(R.layout.activity_main);
-
-
+        loader = findViewById(R.id.gifImageView2);
+        loader.setVisibility(View.INVISIBLE);
 
     }
 
@@ -47,10 +49,40 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //TODO : contiene un thread fatto a tromba per simulare la ricerca
+    //rivedere per qualità di codice
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void didTapButton(View view) {
         Button bounceButtonSearch = findViewById(R.id.bounceButtonSearch);
+
+
+        final int[] a = {0};
+
+        final Timer T=new Timer();
+        T.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable()
+                {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    public void run()
+                    {
+
+                            loader.setVisibility(View.VISIBLE);
+                            vibration(true);
+
+                            a[0]++;
+                            if(a[0]==8){
+                                T.cancel();
+                                loader.setVisibility(View.INVISIBLE);
+                            }
+                    }
+                });
+            }
+        }, 1000, 1000);
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibration(true);
