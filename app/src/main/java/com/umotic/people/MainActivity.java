@@ -3,9 +3,6 @@ package com.umotic.people;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -14,18 +11,15 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Toast;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
-import pl.droidsonroids.gif.GifImageView;
 
 
 public class MainActivity extends AppCompatActivity {
 
     UserPositionManager userPositionManager;
-    GifImageView loader;
+    public boolean inSearch=false;
 
     private FragmentTransaction transaction;
 
@@ -34,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         userPositionManager = new UserPositionManager(this);
         setContentView(R.layout.activity_main);
-        loader = findViewById(R.id.gifImageView2);
-        loader.setVisibility(View.INVISIBLE);
 
     }
 
@@ -56,26 +48,30 @@ public class MainActivity extends AppCompatActivity {
     public void didTapButton(View view) {
         Button bounceButtonSearch = findViewById(R.id.bounceButtonSearch);
 
-
         final int[] a = {0};
 
         final Timer T=new Timer();
         T.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                inSearch=true;
                 runOnUiThread(new Runnable()
                 {
+
+
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void run()
                     {
 
-                            loader.setVisibility(View.VISIBLE);
-                            vibration(true);
+                            if(inSearch) {
 
-                            a[0]++;
-                            if(a[0]==8){
-                                T.cancel();
-                                loader.setVisibility(View.INVISIBLE);
+                                vibration(true);
+
+                                a[0]++;
+                                if (a[0] == 8) {
+                                    T.cancel();
+                                    inSearch = false;
+                                }
                             }
                     }
                 });
