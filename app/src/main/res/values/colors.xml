@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="bglightcolor">#E9ECFF</color>
+    <color name="colorPrimary">#3B4269</color>
+    <color name="colorPrimaryDark">#292A44</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="userFound">#4CAF50</color>
+    <color name="userFoundDarker">#8B023C03</color>
+    <color name="userSearching">#FF9800</color>
+    <color name="greenMaterialDark">#9027882D</color>
 </resources>

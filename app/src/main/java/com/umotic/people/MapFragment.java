@@ -21,8 +21,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -32,41 +34,40 @@ import java.util.Random;
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-
+    //Variable definition
     static ArrayList<String> positions = new ArrayList<String>();
     static Bitmap gpsM;
     static Bitmap gpsF;
     static Bitmap gpsG;
     static Bitmap gpsCustom;
-
     static GoogleMap googleMap;
     SharedPreferences sharedPref;
     SupportMapFragment mapFragment;
-    public MapFragment()
 
-    {
 
-    }
+
+    public MapFragment() {}
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if(mapFragment == null){
+
+        if(mapFragment == null) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             mapFragment = SupportMapFragment.newInstance();
             ft.replace(R.id.map,mapFragment).commit();
         }
+
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         mapFragment.getMapAsync(this);
 
         //inizializza i marker del gps con gli sprite colorati
         prepareWordsIcons();
-
         return v;
     }
 
@@ -76,94 +77,74 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         new Thread(new Runnable() {
             public void run() {
-
                 while (true) {
-
                     //MapFragment.displayWorldLocations();
-
                     //animateMarker(marker);
                     //Toast.makeText(MainActivity.class, "Ase", Toast.LENGTH_SHORT).show();
                 }
-                }
+            }
             }
         ).start();
-
     }
-
 
 
     //appena la mappa è pronta effettua operazioni preliminari
     //stile mappa, telecamera posizionata sull'utente,
     @Override
     public void onMapReady(final GoogleMap googleMap) {
+        String lon = sharedPref.getString("lon", "0");
+        String lat = sharedPref.getString("lat", "0");
         this.googleMap=googleMap;
+
+
         googleMap.setMaxZoomPreference(16);
         googleMap.setMapType(1);
         googleMap.setMyLocationEnabled(true);
 
-        String lon = sharedPref.getString("lon", "0");
-        String lat = sharedPref.getString("lat", "0");
 
-        Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
         LatLng pos = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
+
 
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(pos, 15);
         googleMap.animateCamera(location);
 
+
         //if userLocationEnable is false, can use custom marker
         if (!googleMap.isMyLocationEnabled()) {
-
             Toast.makeText(getContext(), "THREAD CUSTOM-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.gps3);
             Bitmap gps = Bitmap.createScaledBitmap(bitmap, 80, 80, true);
-
             googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gps)).position(pos));
-        return;
+            return;
         }
-        Toast.makeText(getContext(), "THREAD not custom-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
+
+        //Toast.makeText(getContext(), "THREAD not custom-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
 
         googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
                 Float zoom = googleMap.getCameraPosition().zoom;
-
                     //13 zoom = 20 px
                     //10 zoom = 14 px
                     //33 zoom = 12 px
                     //2  zoom =  0 px
-
-                    int dimensione = (int) (2*Math.pow(zoom.doubleValue(),2));
-
-                    modifyWordsIcons(dimensione,dimensione);
-
-                    //Log.d("camera",dimensione+" -> ZOOM: "+zoom.toString());
-
-
-
+                int dimensione = (int) (2*Math.pow(zoom.doubleValue(),2));
+                modifyWordsIcons(dimensione,dimensione);
+                //Log.d("camera",dimensione+" -> ZOOM: "+zoom.toString());
                 displayWorldLocations();
-
-
-
-
-
             }
         });
-
     }
 
     //mostra sulla mappa gli sprite
     public static void displayWorldLocations() {
-
         googleMap.clear();
         //world positions
-
-
         // cicla tutte le pos e metti i marker come sprite rossi
         // inventa pos
         //Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
         if (positions != null && positions.size() > 1) {
-
-
             for (String position : positions) {
                 String[] worldposition = position.split(",");
                 //Toast.makeText(, "mostrando pose", Toast.LENGTH_SHORT).show();
@@ -174,15 +155,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     //Log.d("MALE", "famale");
                     googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsM)).position(wPos).anchor(0.5f, 0.5f).alpha(1f).flat(true));
                 }
+
                 if ("F".equals(worldposition[2])) {
                    // Log.d("FEMALE", "female");
 
                     googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsF)).position(wPos).anchor(0.5f, 0.5f).alpha(1f).flat(true));
                 }
+
                 if ("G".equals(worldposition[2])) {
                     //Log.d("Generic", "female");
-
-
                     googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsG)).position(wPos).anchor(0.5f, 0.5f).alpha(1f).flat(true));
 
                /*     Marker marker = googleMap.addMarker(new MarkerOptions()
@@ -192,24 +173,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.fromResource(gpsCustom))));
 */
                 }
-
             }
-
-
-
         } else {
             //Toast.makeText(getContext(), "nulla da mostrare", Toast.LENGTH_SHORT).show();
         }
-
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-
     }
-
 
 
     //inizializza i marker del gps con gli sprite colorati (M & F)
@@ -232,7 +206,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
     private void modifyWordsIcons(int x,int y) {
 
         Bitmap bitmapM = BitmapFactory.decodeResource(getResources(), R.drawable.male);
@@ -252,16 +225,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
     //Definisce le posizioni da attribuire ai marker, chiamato dal main(sprite colorati)
     public static void fillWorldLPositions() {
         positions.clear();
 
-
         //Ferrarese
         for(int a =1;a<(new Random().nextInt(15 - 1) + 4);a++) {
             positions.add("41.12231423338676,16.86048149602925,G");
-
         }
 
         //"00.00010000000000,00.00010000000000"
@@ -271,16 +241,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         //Politecnico
         for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
-
             positions.add("41.10907370571775,16.878347396850586,G");
         }
         //postaccio
         for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
-
             positions.add("41.11148,16.8554,G");
         }
     }
-
-
-
 }
