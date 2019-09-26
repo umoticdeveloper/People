@@ -45,9 +45,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     SupportMapFragment mapFragment;
 
 
-
+    //Constructors
     public MapFragment() {}
 
+
+
+
+    /**
+     * ###################################################################################### CALLBACK METHODS #############################################################################################################################
+     *
+     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +79,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    //TODO : il ciclo funziona ma non riesco ad adnimare i marker
+    //TODO : il ciclo funziona ma non riesco ad animare i marker
     public static void test() {
 
         new Thread(new Runnable() {
@@ -96,15 +103,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         String lat = sharedPref.getString("lat", "0");
         this.googleMap=googleMap;
 
-
         googleMap.setMaxZoomPreference(16);
         googleMap.setMapType(1);
         googleMap.setMyLocationEnabled(true);
 
-
         //Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
         LatLng pos = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
-
 
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(pos, 15);
         googleMap.animateCamera(location);

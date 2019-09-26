@@ -165,6 +165,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         databaseReference.setValue(user);
     }
 
+
     //Quando avviene un cambiamento di posizione
     @Override
     public void onLocationChanged(Location location) {
@@ -180,6 +181,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         sharedLastUserPosition(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()));
         dbUserUpdater(location);
     }
+
 
     //ultima posizione nota condivisa nelle shared
     private void sharedLastUserPosition(String lat, String lon) {

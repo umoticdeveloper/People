@@ -3,6 +3,7 @@
     <color name="bglightcolor">#E9ECFF</color>
     <color name="colorPrimary">#3B4269</color>
     <color name="colorPrimaryDark">#292A44</color>
+    <color name="colorPrimaryDarkNoActionBar">#D5D5D5</color>
     <color name="colorAccent">#D81B60</color>
     <color name="userFound">#4CAF50</color>
     <color name="userFoundDarker">#8B023C03</color>
