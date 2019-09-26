@@ -1,5 +1,74 @@
 <resources>
-    <string name="app_name">People</string>
+    <string name="app_name" translatable="false">People</string>
     <string name="title_activity_test_pulse_view">TestPulseView</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_sex_selector">SexSelectorActivity</string>
+    <string name="umoticGroup">Umotic Group</string>
+
+
+    <!-- Strings for Registration Flow -->
+    <string name="sex_selector_title">Please select your gender</string>
+    <string name="age_selector_title">What is your age range?</string>
+    <string name="sex_selector_message_guy">You\'re a cool guy!</string>
+    <string name="sex_selector_message_girl">You\'re a beautiful girl!</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="remember_me">Remember me!</string>
+    <string name="APIregistration">Or you can register with:</string>
+    <string name="APIlogin">Or you can sign in with:</string>
+    <string name="message_registration">If you don\'t have an account, create it HERE!</string>
+    <string name="sign_up">Sign Up</string>
+
+    <!-- Useremo questo tipo di array per creare dei messaggi targhettizzati per ogni range di età (non urgente) -->
+    <string name="seek_kid">18-</string>
+    <string name="seek_young">18-24</string>
+    <string name="seek_adult">25-30</string>
+    <string name="seek_adult_old">31-40</string>
+    <string name="seek_old">40+</string>
+
+
+    <!-- PERMISSION STRINGS -->
+    <string name="gps_permission_title">People requires GPS position</string>
+    <string name="gps_permission_message">If you want to enjoy my features, I need GPS permissions.</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_gps_activation_msg">Sorry, I need GPS to be activated if you want to use my features..</string>
+    <string name="go_to_settings">Go to settings</string>
+
+
+    <!-- Array for age seek bar -->
+    <string-array name="kid_age_random_message">
+
+    </string-array>
+    <string-array name="young_age_random_message">
+
+    </string-array>
+    <string-array name="adult_age_random_message">
+
+    </string-array>
+    <string-array name="adult_old_age_random_message">
+
+    </string-array>
+    <string-array name="old_age_random_message">
+
+    </string-array>
+
+
+    <!-- Strings for seek bar array -->
+    <string-array name="ageSeekBar">
+        <item>@string/seek_kid</item>
+        <item>@string/seek_young</item>
+        <item>@string/seek_adult</item>
+        <item>@string/seek_adult_old</item>
+        <item>@string/seek_old</item>
+    </string-array>
 
 </resources>

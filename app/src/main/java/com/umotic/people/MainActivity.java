@@ -1,19 +1,26 @@
 package com.umotic.people;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,24 +28,79 @@ public class MainActivity extends AppCompatActivity {
     UserPositionManager userPositionManager;
     public boolean inSearch=false;
     private PulsatorLayout pulsatorLayout, pulsatorLayoutOver;
+    private final int ACCESS_TO_POSITION_REQUEST = 1;
 
 
 
 
+    /**
+     * ###################################################################################### CALLBACK METHODS #############################################################################################################################
+     *
+     */
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        userPositionManager = new UserPositionManager(this);
-
+        setContentView(R.layout.activity_main);
 
         //Variable references
-        setContentView(R.layout.activity_main);
+        userPositionManager = new UserPositionManager(this);
         pulsatorLayout = (PulsatorLayout)findViewById(R.id.pulseView);
         pulsatorLayoutOver = (PulsatorLayout)findViewById(R.id.pulseViewOver);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //requestGpsPermission();
+    }
+
+    //The position tracking stops only when the app is closed
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        userPositionManager.stop();
+    }
+
+
+    /**
+     * ###################################################################################### PERMISSION METHODS #############################################################################################################################
+     *
+     */
+
+    /*
+    //Check the user choise for the position permission
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case ACCESS_TO_POSITION_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission granted", Toast.LENGTH_LONG);
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG);
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }*/
+
+    /*
+    //check if the permission is still given to the app
+    public boolean checkLocationPermission() {
+        String permission = "android.permission.ACCESS_FINE_LOCATION";
+        int res = this.checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
+    }*/
+
+
+    /**
+     * ####################################################################################### CUSTOM METHODS #################################################################################################################
+     *
+     */
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void vibration(boolean active) {
@@ -49,14 +111,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void requestGpsPermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION) && ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+            new AlertDialog.Builder(this).setTitle("Permission needed").setMessage("Without this permission the app can`t work properly")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, ACCESS_TO_POSITION_REQUEST);
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_TO_POSITION_REQUEST);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create().show();
+        }else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, ACCESS_TO_POSITION_REQUEST);
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_TO_POSITION_REQUEST);
+        }
+    }
+
+
     //TODO : contiene un thread fatto a tromba per simulare la ricerca
-    //rivedere per qualità di codice
+    //ON CLICK CUSTOM METHOD
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void didTapButton(View view) {
+        /*
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT);
+            Log.d("Request permission", "Permission granted");
+        }else {
+            requestGpsPermission();
+            Log.d("Request permission", "Permission not granted");
+        }*/
 
         Button bounceButtonSearch = findViewById(R.id.bounceButtonSearch);
         final int[] a = {0};
-        final Timer T=new Timer();
+        final Timer T = new Timer();
 
         T.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -115,17 +209,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //The position tracking stops only when the app is closed
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        userPositionManager.stop();
-    }
-
-
     //When users have been found, the animation stops
-    private void onUsersFound() {
+    private void onUsersFound() {    }
 
-
-    }
 }
+
+
+
