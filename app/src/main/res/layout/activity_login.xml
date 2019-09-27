@@ -37,23 +37,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/gotosex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/ic_arrow_forward_24px" />
-
     <TextView
-        android:id="@+id/umoticGroup"
+        android:id="@+id/umoticGroupLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
@@ -82,7 +67,7 @@
         app:layout_constraintVertical_bias="0.005" />
 
     <Button
-        android:id="@+id/btnSignIn"
+        android:id="@+id/btnSignInLogin"
         android:layout_width="155dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -99,17 +84,16 @@
         android:id="@+id/APIRegistrationMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/APIregistration"
+        android:layout_marginTop="24dp"
+        android:text="@string/APIlogin"
         app:layout_constraintBottom_toTopOf="@+id/gotosex"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignUp"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignUpLogin"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/btnSignUp"
+        android:id="@+id/btnSignUpLogin"
         android:layout_width="155dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -128,24 +112,26 @@
         android:layout_width="150dp"
         android:layout_height="120dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
         app:cardCornerRadius="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/gotosex"
+        app:layout_constraintBottom_toTopOf="@+id/umoticGroupLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/APIRegistrationMsg"
-        app:layout_constraintVertical_bias="0.462" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/googleCardView"
         android:layout_width="150dp"
         android:layout_height="120dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         app:cardCornerRadius="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/gotosex"
+        app:layout_constraintBottom_toTopOf="@+id/umoticGroupLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/fbCardView"
         app:layout_constraintTop_toBottomOf="@+id/APIRegistrationMsg"
-        app:layout_constraintVertical_bias="0.458" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/appLogoLogin"

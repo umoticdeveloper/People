@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/MainTheme">
         <activity android:name=".RegistrationActivity"></activity>
-        <activity android:name=".GpsSplashActivity" />
+
+        <!--eliminare gpssplash perchè faccio il controllo dal pulsante della main activity -->
         <activity
             android:name=".LoginActivity"
             android:theme="@style/MainTheme.NoActionBar">
