@@ -7,7 +7,7 @@
     tools:context=".LoginActivity">
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/passwordLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -20,20 +20,20 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/emailLogin" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/emailLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="276dp"
+        android:layout_marginTop="200dp"
         android:layout_marginEnd="24dp"
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,9 +47,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.993" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <CheckBox
@@ -59,11 +57,10 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="@string/remember_me"
-        app:layout_constraintBottom_toTopOf="@+id/gotosex"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLogin"
         app:layout_constraintVertical_bias="0.005" />
 
     <Button
@@ -73,24 +70,20 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:text="@string/action_sign_in_short"
-        app:layout_constraintBottom_toTopOf="@+id/APIRegistrationMsg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rememberMeCheck"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/rememberMeCheck" />
 
     <TextView
-        android:id="@+id/APIRegistrationMsg"
+        android:id="@+id/APILoginMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/APIlogin"
-        app:layout_constraintBottom_toTopOf="@+id/gotosex"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignUpLogin"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSignUpLogin" />
 
     <Button
         android:id="@+id/btnSignUpLogin"
@@ -98,17 +91,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="284dp"
         android:text="@string/sign_up"
-        app:layout_constraintBottom_toTopOf="@+id/gotosex"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rememberMeCheck"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/rememberMeCheck" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/fbCardView"
+        android:id="@+id/fbCardViewLogin"
         android:layout_width="150dp"
         android:layout_height="120dp"
         android:layout_marginStart="24dp"
@@ -116,11 +106,11 @@
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toTopOf="@+id/umoticGroupLogin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/APIRegistrationMsg"
+        app:layout_constraintTop_toBottomOf="@+id/APILoginMessage"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/googleCardView"
+        android:id="@+id/googleCardViewLogin"
         android:layout_width="150dp"
         android:layout_height="120dp"
         android:layout_marginTop="32dp"
@@ -129,15 +119,17 @@
         app:layout_constraintBottom_toTopOf="@+id/umoticGroupLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/fbCardView"
-        app:layout_constraintTop_toBottomOf="@+id/APIRegistrationMsg"
+        app:layout_constraintStart_toEndOf="@+id/fbCardViewLogin"
+        app:layout_constraintTop_toBottomOf="@+id/APILoginMessage"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/appLogoLogin"
-        android:layout_width="122dp"
-        android:layout_height="122dp"
-        app:layout_constraintBottom_toTopOf="@+id/email"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/emailLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

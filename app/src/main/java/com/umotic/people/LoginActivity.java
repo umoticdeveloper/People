@@ -14,11 +14,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class LoginActivity extends AppCompatActivity {
 
     //Variable definition
-    FloatingActionButton goToSex;
-    Button btnSignUp;
-    Intent goToRegistration, goToSexActivity;
+    Button btnSignUp, btnSignIn;
+    Intent goToRegistration, goToMain;
     EditText email, password;
-    SharedPreferences registrationData;
 
 
 
@@ -34,11 +32,11 @@ public class LoginActivity extends AppCompatActivity {
 
         //Variable references
         goToRegistration = new Intent(this, RegistrationActivity.class);
-        goToSexActivity = new Intent(this, SexSelectorActivity.class);
+        goToMain = new Intent(this, MainActivity.class);
         btnSignUp = (Button)findViewById(R.id.btnSignUpLogin);
-        goToSex = (FloatingActionButton)findViewById(R.id.gotosex);
-        email = (EditText)findViewById(R.id.email);
-        password = (EditText)findViewById(R.id.password);
+        btnSignIn = (Button)findViewById(R.id.btnSignInLogin);
+        email = (EditText)findViewById(R.id.emailLogin);
+        password = (EditText)findViewById(R.id.passwordLogin);
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -49,14 +47,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        goToSex.setOnClickListener(new View.OnClickListener() {
+        //Check data for login
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(goToSexActivity);
-                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                startActivity(goToMain);
             }
         });
+
     }
-
-
 }
