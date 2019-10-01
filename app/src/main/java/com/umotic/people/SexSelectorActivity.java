@@ -2,17 +2,24 @@ package com.umotic.people;
 
 import android.content.Intent;
 import android.content.SyncStatusObserver;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rd.PageIndicatorView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SexSelectorActivity extends AppCompatActivity {
 
@@ -23,6 +30,7 @@ public class SexSelectorActivity extends AppCompatActivity {
     Intent goToAgeSelectorActivity;
     TextView sexMessage;
     PageIndicatorView pageIndicatorView;
+    Timer T;
 
 
 
@@ -51,6 +59,10 @@ public class SexSelectorActivity extends AppCompatActivity {
         goToAgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                T.cancel();
+
+                //String[] values = {pageIndicatorView.getSelection()+"",null,null,null,null,null};
+                //new SharedManager(getApplicationContext()).writeInfoShared(values);
                 startActivity(goToAgeSelectorActivity);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             }
@@ -60,11 +72,34 @@ public class SexSelectorActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(imageAdapter.getItemPosition(viewPager) == -1){
-            sexMessage.setText(R.string.sex_selector_message_guy);
-        } else {
-            sexMessage.setText(R.string.sex_selector_message_girl);
-        }
+
+
+       T = new Timer();
+
+        T.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    public void run() {
+
+                       //Log.d("SESE",""+pageIndicatorView.getSelection());
+
+                        if(pageIndicatorView.getSelection() == 0){
+                            sexMessage.setText(R.string.sex_selector_message_guy);
+                        } else {
+                            sexMessage.setText(R.string.sex_selector_message_girl);
+                        }
+
+
+
+
+                    }
+                });
+            }
+        }, 1, 1);
+
+
     }
 
 
@@ -82,6 +117,9 @@ public class SexSelectorActivity extends AppCompatActivity {
      * ####################################################################################### CUSTOM METHODS #################################################################################################################
      *
      */
+
+
+
 
 
 }

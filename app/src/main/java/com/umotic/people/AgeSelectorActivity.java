@@ -2,7 +2,9 @@ package com.umotic.people;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,9 +25,8 @@ public class AgeSelectorActivity extends AppCompatActivity {
     Animation animFadeOut;
     Animation animFadeIn;
     FloatingActionButton goToMain;
-    Intent goToPermissionSplashScreen;
-
-
+    Intent goToMainActivity;
+    SeekParams seekActualParams;
 
 
     /**
@@ -39,7 +40,7 @@ public class AgeSelectorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_age_selector);
 
         //Variable references
-        goToPermissionSplashScreen = new Intent(this, PermissionSplashActivity.class);
+        goToMainActivity = new Intent(this, MainActivity.class);
         imageView = (ImageView)findViewById(R.id.ageImage);
         indicatorAgeBar = (IndicatorSeekBar)findViewById(R.id.indicatorSeekBarAge);
         animFadeOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_right);
@@ -49,7 +50,11 @@ public class AgeSelectorActivity extends AppCompatActivity {
         goToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(goToPermissionSplashScreen);
+
+                String[] values = {null,null,null,null,null,seekActualParams.progress+""};
+                new SharedManager(getApplicationContext()).writeInfoShared(values);
+
+                startActivity(goToMainActivity);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             }
         });
@@ -91,6 +96,8 @@ public class AgeSelectorActivity extends AppCompatActivity {
                     imageView.setImageResource(R.drawable.ic_old);
                     Log.d("Età: ", "> 40");
                 }
+
+                seekActualParams=seekParams;
             }
 
             @Override

@@ -18,8 +18,6 @@ public class LoginActivity extends AppCompatActivity {
     Intent goToRegistration, goToMain;
     EditText email, password;
 
-
-
     /**
      * ###################################################################################### CALLBACK METHODS #############################################################################################################################
      *

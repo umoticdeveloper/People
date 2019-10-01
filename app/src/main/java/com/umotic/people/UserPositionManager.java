@@ -50,7 +50,6 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
                 .build();
 
         mLocationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-
         //checkLocation(); //check whether location service is enable or not in your  phone
 
     }
@@ -155,7 +154,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         user.setLongitude(String.valueOf(location.getLongitude()));
         //TODO: capire come si prende il nome della città
         user.setCityName("Torremaggiore");
-        user.setUserAge(22);
+        user.setUserAge(22+"");
         user.setUserSex("m".toUpperCase());
         user.setUserIsSpecialGuest(false);
         user.setLastTimePositionUpdate(Calendar.getInstance().getTime());

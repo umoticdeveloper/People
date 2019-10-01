@@ -38,6 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 startActivity(goToLoginActivity);
                 overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
@@ -50,10 +51,18 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+
+
+
+                String[] values = {null,null,password.getText().toString(),name.getText().toString(),surname.getText().toString(),email.getText().toString()};
+                new SharedManager(getApplicationContext()).writeInfoShared(values);
                 startActivity(gotToSexActivity);
                 overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
         });
+
+
+
 
     }
 }

@@ -11,12 +11,54 @@ public class User {
      * Variables definitions
      */
     private String userSex;
-    private int userAge;
+    private String userAge;
     private boolean userIsSpecialGuest;
     private String latitude;
     private String longitude;
     private String cityName;
     private Date lastTimePositionUpdate;
+    private String name;
+    private String surname;
+    private String mail;
+    private String pwd;
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public boolean isUserIsSpecialGuest() {
+        return userIsSpecialGuest;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+
 
     /**
      * Constructors definitions
@@ -40,11 +82,11 @@ public class User {
         this.userSex = userSex;
     }
 
-    public int getUserAge() {
+    public String getUserAge() {
         return userAge;
     }
 
-    public void setUserAge(int userAge) {
+    public void setUserAge(String userAge) {
         this.userAge = userAge;
     }
 

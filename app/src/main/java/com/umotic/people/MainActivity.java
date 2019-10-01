@@ -18,6 +18,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.umotic.people.Bean.User;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
@@ -60,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         userPositionManager.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        User user = new SharedManager(getApplicationContext()).getUserInfoShared();
+
+        Toast.makeText(this, user.getName()+" "+user.getMail(), Toast.LENGTH_SHORT).show();
     }
 
 
