@@ -19,7 +19,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.umotic.people.Bean.User;
+import com.umotic.people.Utils.GpsUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean inSearch=false;
     private PulsatorLayout pulsatorLayout, pulsatorLayoutOver;
     private final int ACCESS_TO_POSITION_REQUEST = 1;
+    private boolean isContinue = false;
+    private boolean isGPS = false;
+
 
 
 
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         userPositionManager = new UserPositionManager(this);
         pulsatorLayout = (PulsatorLayout)findViewById(R.id.pulseView);
         pulsatorLayoutOver = (PulsatorLayout)findViewById(R.id.pulseViewOver);
+
     }
 
     @Override
@@ -136,6 +142,15 @@ public class MainActivity extends AppCompatActivity {
             requestGpsPermission();
             Log.d("Request permission", "Permission not granted");
         }*/
+
+        //TODO: richiedere l'attivazione del GPS quando clicco
+        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
+            @Override
+            public void gpsStatus(boolean isGPSEnable) {
+                // turn on GPS
+                isGPS = isGPSEnable;
+            }
+        });
 
         Button bounceButtonSearch = findViewById(R.id.bounceButtonSearch);
         final int[] a = {0};

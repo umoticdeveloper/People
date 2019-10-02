@@ -66,7 +66,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
             // Permission is not granted
             // Should we show an explanation?
-           showAlert_2();
+           //showAlert_2();
 
         } else {
             //Arready have permission
@@ -193,7 +193,7 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         editor.commit();
     }
 
-
+/*
     private boolean checkLocation() {
 
         if(!isLocationEnabled())
@@ -230,6 +230,6 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
+    }*/
 
 }
