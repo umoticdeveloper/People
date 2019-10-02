@@ -142,8 +142,7 @@ public class MainActivity extends AppCompatActivity {
             requestGpsPermission();
             Log.d("Request permission", "Permission not granted");
         }*/
-
-        //TODO: richiedere l'attivazione del GPS quando clicco
+        
         new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
             @Override
             public void gpsStatus(boolean isGPSEnable) {
