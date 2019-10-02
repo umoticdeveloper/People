@@ -27,6 +27,8 @@ public class AgeSelectorActivity extends AppCompatActivity {
     FloatingActionButton goToMain;
     Intent goToMainActivity;
     SeekParams seekActualParams;
+    String name, surname, email, password, ageRange = "[18-24]";
+    int sex;
 
 
     /**
@@ -47,11 +49,19 @@ public class AgeSelectorActivity extends AppCompatActivity {
         animFadeIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_right_quick);
         goToMain = (FloatingActionButton)findViewById(R.id.gotopermissionsplashscreen);
 
+        //getting data from RegistrationActivity
+        name = getIntent().getStringExtra("userName");
+        surname = getIntent().getStringExtra("userSurname");
+        email = getIntent().getStringExtra("userMail");
+        password = getIntent().getStringExtra("userPassword");
+        sex = getIntent().getIntExtra("userSex", -1);
+
+
         goToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String[] values = {null,null,null,null,null,seekActualParams.progress+""};
+                Log.i("from registration sex: ", name + surname + email + password + ageRange);
+                String[] values = {name, surname, email, password, sex + "", ageRange};
                 new SharedManager(getApplicationContext()).writeInfoShared(values);
 
                 startActivity(goToMainActivity);
@@ -70,30 +80,35 @@ public class AgeSelectorActivity extends AppCompatActivity {
                     imageView.clearAnimation();
                     imageView.startAnimation(animFadeIn);
                     imageView.setImageResource(R.drawable.ic_kid);
+                    ageRange = "[15-18]";
                     Log.d("Età: ", "< 18");
                 }else if(seekParams.progress == 24){
                     animFadeOut.reset();
                     imageView.clearAnimation();
                     imageView.startAnimation(animFadeIn);
                     imageView.setImageResource(R.drawable.ic_young);
+                    ageRange = "[18-24]";
                     Log.d("Età: ", "[18-24]");
                 }else if(seekParams.progress == 50){
                     animFadeOut.reset();
                     imageView.clearAnimation();
                     imageView.startAnimation(animFadeIn);
                     imageView.setImageResource(R.drawable.ic_adult);
+                    ageRange = "[25-30]";
                     Log.d("Età: ", "[25-30]");
                 }else if(seekParams.progress == 75){
                     animFadeOut.reset();
                     imageView.clearAnimation();
                     imageView.startAnimation(animFadeIn);
                     imageView.setImageResource(R.drawable.ic_adult_old);
+                    ageRange = "[31-40]";
                     Log.d("Età: ", "[31-40]");
                 }else if(seekParams.progress == 100){
                     animFadeOut.reset();
                     imageView.clearAnimation();
                     imageView.startAnimation(animFadeIn);
                     imageView.setImageResource(R.drawable.ic_old);
+                    ageRange = "[40-60]";
                     Log.d("Età: ", "> 40");
                 }
 

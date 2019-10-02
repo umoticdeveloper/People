@@ -31,6 +31,7 @@ public class SexSelectorActivity extends AppCompatActivity {
     TextView sexMessage;
     PageIndicatorView pageIndicatorView;
     Timer T;
+    String name, surname, email, password;
 
 
 
@@ -53,16 +54,22 @@ public class SexSelectorActivity extends AppCompatActivity {
         sexMessage = (TextView)findViewById(R.id.sexSelectorMessage);
         pageIndicatorView = (PageIndicatorView)findViewById(R.id.sexIndicatorView);
 
-        Log.d("Count: ", pageIndicatorView.getCount() + "");
-
+        //getting data from RegistrationActivity
+        name = getIntent().getStringExtra("userName");
+        surname = getIntent().getStringExtra("userSurname");
+        email = getIntent().getStringExtra("userMail");
+        password = getIntent().getStringExtra("userPassword");
 
         goToAgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 T.cancel();
-
-                //String[] values = {pageIndicatorView.getSelection()+"",null,null,null,null,null};
-                //new SharedManager(getApplicationContext()).writeInfoShared(values);
+                //passing data to AgeActivity
+                goToAgeSelectorActivity.putExtra("userMail", email)
+                        .putExtra("userPassword", password.toString())
+                        .putExtra("userName", name.toString())
+                        .putExtra("userSurname", surname.toString())
+                        .putExtra("userSex", pageIndicatorView.getSelection());
                 startActivity(goToAgeSelectorActivity);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             }
@@ -72,9 +79,7 @@ public class SexSelectorActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
-       T = new Timer();
+        T = new Timer();
 
         T.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -82,7 +87,6 @@ public class SexSelectorActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void run() {
-
                        //Log.d("SESE",""+pageIndicatorView.getSelection());
 
                         if(pageIndicatorView.getSelection() == 0){
@@ -90,16 +94,11 @@ public class SexSelectorActivity extends AppCompatActivity {
                         } else {
                             sexMessage.setText(R.string.sex_selector_message_girl);
                         }
-
-
-
-
+                        Log.i("from registration: ", name + surname + email + password);
                     }
                 });
             }
         }, 1, 1);
-
-
     }
 
 
