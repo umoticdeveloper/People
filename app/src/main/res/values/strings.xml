@@ -41,10 +41,28 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="no_gps_activation_msg">Sorry, I need GPS to be activated if you want to use my features..</string>
+    <string name="guide_to_permissions">You must click on the following button, select the voice <b>Permissions</b> and then activate <b>Location</b>.</string>
     <string name="go_to_settings">Go to settings</string>
 
 
     <!-- Array for age seek bar -->
+    <string name="title_activity_delete">delete</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+
+
+    <!-- Strings for seek bar array -->
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
     <string-array name="kid_age_random_message">
 
     </string-array>
@@ -60,9 +78,6 @@
     <string-array name="old_age_random_message">
 
     </string-array>
-
-
-    <!-- Strings for seek bar array -->
     <string-array name="ageSeekBar">
         <item>@string/seek_kid</item>
         <item>@string/seek_young</item>

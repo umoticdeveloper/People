@@ -3,14 +3,12 @@ package com.umotic.people;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -21,16 +19,16 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.umotic.people.Bean.User;
-import com.umotic.people.dataproviders.DpUserInfo;
-
 import java.util.Calendar;
+
+
 
 public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
+    //Variable definition
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private LocationManager mLocationManager;
-
     LatLng latLng;
     private LocationRequest mLocationRequest;
     private com.google.android.gms.location.LocationListener listener;
@@ -39,21 +37,18 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
     private LocationManager locationManager;
     User user = new User();
     Context context;
-    DpUserInfo dpUserInfo = new DpUserInfo(context);
-    protected UserPositionManager(Context c) {
 
+
+
+    protected UserPositionManager(Context c) {
         context = c;
         mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-
         mLocationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-        //checkLocation(); //check whether location service is enable or not in your  phone
-
     }
-
 
 
 
@@ -63,16 +58,13 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
-
             // Permission is not granted
             // Should we show an explanation?
-           //showAlert_2();
+            //showAlert_2();
 
         } else {
             //Arready have permission
-
             startLocationUpdates();
-
             mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
             if (mLocation == null) {
@@ -80,7 +72,6 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
                 startLocationUpdates();
             }
             if (mLocation != null) {
-
                 //mLatitudeTextView.setText(String.valueOf(mLocation.getLatitude()));
                 //mLongitudeTextView.setText(String.valueOf(mLocation.getLongitude()));
             } else {
@@ -89,11 +80,13 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         }
     }
 
+
     @Override
     public void onConnectionSuspended(int i) {
         Log.i("GPS","Connection Suspended");
         mGoogleApiClient.connect();
     }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -102,7 +95,6 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
 
     protected void start() {
-
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
@@ -110,11 +102,11 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
 
     protected void stop() {
-
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
+
 
     //Get GPS location
     protected void startLocationUpdates() {
@@ -135,11 +127,10 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
             Log.d("reques", "--->>>>>");
             return;
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
-                mLocationRequest, this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         Log.d("reque", "--->>>>");
-
     }
+
 
     /**
      * PRESA IN CARICO DA FEDERICO SCHIAVONE: GESTIONE DATI CON FIREBASE
@@ -158,7 +149,6 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         user.setUserSex("m".toUpperCase());
         user.setUserIsSpecialGuest(false);
         user.setLastTimePositionUpdate(Calendar.getInstance().getTime());
-
         //TODO: CAPIRE SE E' MEGLIO USARE UN DATAPROVIDER O LASCIARE COSI' COM'E' PERCHE' COL DP CREA A LOOP TANTI UTENTI OGNI VOLTA CHE CAMBIA LA POSIZIONE.
         //dpUserInfo.insertUserInfo(user);
         databaseReference.setValue(user);
@@ -168,13 +158,11 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
     //Quando avviene un cambiamento di posizione
     @Override
     public void onLocationChanged(Location location) {
-
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
 
         //Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-
         // You can now create a LatLng Object for use with maps
         //latLng = new LatLng(location.getLatitude(), location.getLongitude());
         sharedLastUserPosition(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()));
@@ -184,52 +172,10 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
     //ultima posizione nota condivisa nelle shared
     private void sharedLastUserPosition(String lat, String lon) {
-
         SharedPreferences sharedPref =  ((Activity) context).getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-
         editor.putString("lon", lon);
         editor.putString("lat", lat);
         editor.commit();
     }
-
-/*
-    private boolean checkLocation() {
-
-        if(!isLocationEnabled())
-            showAlert();
-        return isLocationEnabled();
-    }
-
-    //mostra dialogo esteso richiesta permessi gps
-    private void showAlert() {
-        new AlertDialog.Builder(context)
-                .setTitle("Necessario accesso alla Posizione ")
-                .setMessage("E' necessario attivare la geolocalizzazione per quest' app")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-                    }
-                })
-                .setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).create().show();
-    }
-
-    //mostra direttamente la richiesta permessi
-    private void showAlert_2() {
-        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-    }
-
-    private boolean isLocationEnabled() {
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }*/
-
 }

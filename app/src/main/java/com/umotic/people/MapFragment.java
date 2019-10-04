@@ -1,15 +1,18 @@
 package com.umotic.people;
 
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +24,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Random;
+
+
 
 
 /**
@@ -55,6 +57,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      * ###################################################################################### CALLBACK METHODS #############################################################################################################################
      *
      */
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,7 +108,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         googleMap.setMaxZoomPreference(16);
         googleMap.setMapType(1);
-        googleMap.setMyLocationEnabled(true);
+
+
+        if(!checkLocationPermission()){
+            requestGpsPermission();
+        }else {
+            googleMap.setMyLocationEnabled(true);
+        }
+
 
         //Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
         LatLng pos = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
@@ -250,6 +260,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //postaccio
         for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
             positions.add("41.11148,16.8554,G");
+        }
+    }
+
+
+
+
+
+
+    //check if the permission is still given to the app
+    public boolean checkLocationPermission() {
+        String permission = "android.permission.ACCESS_FINE_LOCATION";
+        int res = getContext().checkCallingOrSelfPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
+    }
+
+
+    private void requestGpsPermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) && ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }else {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
     }
 }

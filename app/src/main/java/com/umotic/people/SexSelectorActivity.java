@@ -1,25 +1,20 @@
 package com.umotic.people;
 
 import android.content.Intent;
-import android.content.SyncStatusObserver;
 import android.os.Build;
 import android.os.Bundle;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rd.PageIndicatorView;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Timer;
 import java.util.TimerTask;
+
+
 
 public class SexSelectorActivity extends AppCompatActivity {
 

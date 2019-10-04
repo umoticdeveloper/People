@@ -12,13 +12,10 @@
         android:theme="@style/MainTheme">
         <activity
             android:name=".RegistrationActivity"
-            android:theme="@style/MainTheme.NoActionBar"></activity>
-
-        <!--eliminare gpssplash perchè faccio il controllo dal pulsante della main activity -->
+            android:theme="@style/MainTheme.NoActionBar" /> <!-- eliminare gpssplash perchè faccio il controllo dal pulsante della main activity -->
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/MainTheme.NoActionBar">
-        </activity>
+            android:theme="@style/MainTheme.NoActionBar"></activity>
         <activity
             android:name=".SexSelectorActivity"
             android:label="@string/title_activity_sex_selector"
@@ -35,7 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -53,14 +49,13 @@
     </application>
 
     <uses-feature android:name="android.hardware.location.gps" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission
         android:name="com.pkg.map.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <dist:module dist:instant="true" />
 

@@ -1,12 +1,7 @@
 package com.umotic.people;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.umotic.people.Bean.User;
 
 public class SharedManager {
@@ -36,12 +31,12 @@ public class SharedManager {
         }
 
         //PASSWORD
-        if(value[3]!=null) {
+        if(value[3] != null) {
             editor.putString("Pwd", value[3]);
         }
 
         //SEX
-        if(value[4]!=null) {
+        if(value[4] != null) {
             String sex = "";
             if(value[4].contentEquals("0")){
                 sex="M";
@@ -52,19 +47,13 @@ public class SharedManager {
         }
 
         //AGE
-        if(value[5]!=null) {
+        if(value[5] != null) {
             editor.putString("Age", value[5]);
         }
 
-
-
-
-        //SURNAME
-        if(value[1] != null) {
-            editor.putString("Surname", value[1]);
-        }
         editor.commit();
     }
+
 
     public User getUserInfoShared (){
 

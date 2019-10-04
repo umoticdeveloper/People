@@ -1,31 +1,27 @@
 package com.umotic.people;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.umotic.people.Bean.User;
 import com.umotic.people.Utils.GpsUtils;
-
 import java.util.Timer;
 import java.util.TimerTask;
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,12 +52,18 @@ public class MainActivity extends AppCompatActivity {
         pulsatorLayout = (PulsatorLayout)findViewById(R.id.pulseView);
         pulsatorLayoutOver = (PulsatorLayout)findViewById(R.id.pulseViewOver);
 
+        if(!checkLocationPermission()){
+            requestGpsPermission();
+        }
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //requestGpsPermission();
+       /* if(!checkLocationPermission()) {
+            requestGpsPermission();
+        }*/
     }
 
     //The position tracking stops only when the app is closed
@@ -75,10 +77,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+
+
         User user = new SharedManager(getApplicationContext()).getUserInfoShared();
 
         Toast.makeText(this, user.getName()+" "+user.getMail(), Toast.LENGTH_SHORT).show();
     }
+
 
 
     /**
@@ -86,33 +91,21 @@ public class MainActivity extends AppCompatActivity {
      *
      */
 
-    /*
-    //Check the user choise for the position permission
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case ACCESS_TO_POSITION_REQUEST: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission granted", Toast.LENGTH_LONG);
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG);
-                }
-                return;
-            }
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }*/
-
-    /*
     //check if the permission is still given to the app
     public boolean checkLocationPermission() {
         String permission = "android.permission.ACCESS_FINE_LOCATION";
         int res = this.checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
-    }*/
+    }
+
+
+    private void requestGpsPermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION) && ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_TO_POSITION_REQUEST);
+        }else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_TO_POSITION_REQUEST);
+        }
+    }
 
 
     /**
@@ -134,15 +127,8 @@ public class MainActivity extends AppCompatActivity {
     //ON CLICK CUSTOM METHOD
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void didTapButton(View view) {
-        /*
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT);
-            Log.d("Request permission", "Permission granted");
-        }else {
-            requestGpsPermission();
-            Log.d("Request permission", "Permission not granted");
-        }*/
-        
+
+        //Check if GPS is on or off
         new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
             @Override
             public void gpsStatus(boolean isGPSEnable) {

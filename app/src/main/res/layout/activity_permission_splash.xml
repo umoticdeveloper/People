@@ -25,8 +25,9 @@
         android:text="@string/go_to_settings"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noGpsPermissionMsg" />
+        app:layout_constraintTop_toBottomOf="@+id/guidePermissions" />
 
     <TextView
         android:id="@+id/noGpsPermissionMsg"
@@ -41,4 +42,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/permissionSplashIcon" />
+
+    <TextView
+        android:id="@+id/guidePermissions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="177dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="176dp"
+        android:gravity="center"
+        android:text="@string/guide_to_permissions"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noGpsPermissionMsg" />
 </androidx.constraintlayout.widget.ConstraintLayout>
