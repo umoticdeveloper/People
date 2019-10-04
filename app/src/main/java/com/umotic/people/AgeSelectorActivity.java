@@ -1,19 +1,29 @@
 package com.umotic.people;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.umotic.people.helper.HttpJsonParser;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AgeSelectorActivity extends AppCompatActivity {
@@ -28,6 +38,17 @@ public class AgeSelectorActivity extends AppCompatActivity {
     SeekParams seekActualParams;
     String name, surname, email, password, ageRange = "[18-24]";
     int sex;
+
+    //Insert user to DB Variables
+    private static final String USER_NAME = "user_name";
+    private static final String USER_SURNAME = "user_surname";
+    private static final String USER_MAIL = "user_mail";
+    private static final String USER_PASSWORD = "user_password";
+    private static final String SUCCESS_KEY = "success";
+    private static final String EMPTY_PARAM = "";
+    private static final String BASE_URL = "http://peopleapp.altervista.org/DbPhpFiles/";
+    private int success;
+    private ProgressDialog pDialog;
 
 
     /**
@@ -63,7 +84,8 @@ public class AgeSelectorActivity extends AppCompatActivity {
                 String[] values = {name, surname, email, password, sex + "", ageRange};
                 new SharedManager(getApplicationContext()).writeInfoShared(values);
 
-                startActivity(goToMainActivity);
+                new CreateNewUser().execute();
+                //startActivity(goToMainActivity);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             }
         });
@@ -141,8 +163,56 @@ public class AgeSelectorActivity extends AppCompatActivity {
      */
 
 
+    private class CreateNewUser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(AgeSelectorActivity.this);
+            pDialog.setMessage("Wait while your account is set up!");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpJsonParser httpJsonParser = new HttpJsonParser();
+            Map<String, String> httpParams = new HashMap<>();
+            //populating request params
+            httpParams.put(USER_NAME, name);
+            httpParams.put(USER_SURNAME, surname);
+            httpParams.put(USER_MAIL, email);
+            httpParams.put(USER_PASSWORD, password);
+            JSONObject jsonObject = httpJsonParser.makeHttpRequest(BASE_URL + "InsertUSer.php", "POST", httpParams);
+
+            try {
+                success = jsonObject.getInt(SUCCESS_KEY);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
 
-
-
+        protected void onPostExecute(String result) {
+            pDialog.dismiss();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (success == 1) {
+                        Toast.makeText(AgeSelectorActivity.this, "Your account has been registered correctly", Toast.LENGTH_SHORT).show();
+                        Intent i = getIntent();
+                        //send result code 20 to notify about user insert
+                        setResult(20, i);
+                        //finish this activity and go to map activity
+                        startActivity(goToMainActivity);
+                        finish();
+                    } else {
+                        Toast.makeText(AgeSelectorActivity.this, "Some error occured during registration", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
 }
