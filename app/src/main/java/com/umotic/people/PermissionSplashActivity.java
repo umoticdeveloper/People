@@ -57,6 +57,11 @@ public class PermissionSplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(checkLocationPermission()) {
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     startActivity(goToLoginActivity);
                     finish();
                 }
@@ -64,24 +69,6 @@ public class PermissionSplashActivity extends AppCompatActivity {
         };
 
 
-        welcomeThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    super.run();
-                    sleep(1000);
-                } catch (Exception e) {
-
-                } finally {
-                    startActivity(goToLoginActivity);
-                    finish();
-                }
-            }
-        };
-
-        if(checkLocationPermission()) {
-            welcomeThread.start();
-        }
     }
 
     @Override

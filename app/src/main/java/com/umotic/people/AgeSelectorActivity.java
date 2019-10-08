@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,8 +12,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.umotic.people.helper.HttpJsonParser;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -34,21 +39,13 @@ public class AgeSelectorActivity extends AppCompatActivity {
     Animation animFadeOut;
     Animation animFadeIn;
     FloatingActionButton goToMain;
-    Intent goToMainActivity;
+    Intent goToMainActivity, goToLoginActivity;
     SeekParams seekActualParams;
     String name, surname, email, password, ageRange = "[18-24]";
     int sex;
+    private static String URL_REGIST = "http://peopleapp.altervista.org/DbPhpFiles/InsertUser.php";
 
-    //Insert user to DB Variables
-    private static final String USER_NAME = "user_name";
-    private static final String USER_SURNAME = "user_surname";
-    private static final String USER_MAIL = "user_mail";
-    private static final String USER_PASSWORD = "user_password";
-    private static final String SUCCESS_KEY = "success";
-    private static final String EMPTY_PARAM = "";
-    private static final String BASE_URL = "http://peopleapp.altervista.org/DbPhpFiles/";
-    private int success;
-    private ProgressDialog pDialog;
+
 
 
     /**
@@ -68,6 +65,9 @@ public class AgeSelectorActivity extends AppCompatActivity {
         animFadeOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_right);
         animFadeIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_right_quick);
         goToMain = (FloatingActionButton)findViewById(R.id.gotopermissionsplashscreen);
+        goToLoginActivity = new Intent(this, LoginActivity.class);
+
+
 
         //getting data from RegistrationActivity
         name = getIntent().getStringExtra("userName");
@@ -84,8 +84,8 @@ public class AgeSelectorActivity extends AppCompatActivity {
                 String[] values = {name, surname, email, password, sex + "", ageRange};
                 new SharedManager(getApplicationContext()).writeInfoShared(values);
 
-                new CreateNewUser().execute();
-                //startActivity(goToMainActivity);
+                signUp();
+                startActivity(goToMainActivity);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             }
         });
@@ -163,56 +163,61 @@ public class AgeSelectorActivity extends AppCompatActivity {
      */
 
 
-    private class CreateNewUser extends AsyncTask<String, String, String> {
+    private void signUp() {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(AgeSelectorActivity.this);
-            pDialog.setMessage("Wait while your account is set up!");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpJsonParser httpJsonParser = new HttpJsonParser();
-            Map<String, String> httpParams = new HashMap<>();
-            //populating request params
-            httpParams.put(USER_NAME, name);
-            httpParams.put(USER_SURNAME, surname);
-            httpParams.put(USER_MAIL, email);
-            httpParams.put(USER_PASSWORD, password);
-            JSONObject jsonObject = httpJsonParser.makeHttpRequest(BASE_URL + "InsertUSer.php", "POST", httpParams);
-
-            try {
-                success = jsonObject.getInt(SUCCESS_KEY);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
+        final String name = this.name.trim();
+        final String surname = this.surname.trim();
+        final String email = this.email.trim();
+        final String password = this.password.trim();
+        final String ageRange = this.ageRange;
+        final String sex = new SharedManager(getApplicationContext()).getUserInfoShared().getUserSex();
 
 
-        protected void onPostExecute(String result) {
-            pDialog.dismiss();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (success == 1) {
-                        Toast.makeText(AgeSelectorActivity.this, "Your account has been registered correctly", Toast.LENGTH_SHORT).show();
-                        Intent i = getIntent();
-                        //send result code 20 to notify about user insert
-                        setResult(20, i);
-                        //finish this activity and go to map activity
-                        startActivity(goToMainActivity);
-                        finish();
-                    } else {
-                        Toast.makeText(AgeSelectorActivity.this, "Some error occured during registration", Toast.LENGTH_SHORT).show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Response", response);
+                try{
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    Log.d("Json Obj Response", jsonObject.toString());
+                    String success = jsonObject.getString("success");
+
+                    if (success.equals("1")) {
+                        Toast.makeText(AgeSelectorActivity.this, "Register success", Toast.LENGTH_LONG);
                     }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(AgeSelectorActivity.this, "Register failed " + e.toString(), Toast.LENGTH_LONG);
                 }
-            });
-        }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AgeSelectorActivity.this, "Register failed " + error.toString(), Toast.LENGTH_LONG);
+                Log.d("Error Volley", error.toString());
+                startActivity(goToLoginActivity);
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("user_name", name);
+                params.put("user_surname", surname);
+                params.put("user_mail", email);
+                params.put("user_password", password);
+                params.put("user_sex", sex);
+                //params.put("user_age", ageRange);
+                Log.d("params", name + surname + email + password + sex + ageRange);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+        Log.d("RQ", stringRequest.toString());
+
     }
+
 }

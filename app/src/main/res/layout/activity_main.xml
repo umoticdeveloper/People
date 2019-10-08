@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <include
+        android:id="@+id/toolbarMain"
+        layout="@layout/toolbar"></include>
+
     <!--This view is used to create the pulse animation around the button for user search-->
 
     <pl.bclogic.pulsator4droid.library.PulsatorLayout
@@ -76,7 +80,6 @@
         app:layout_constraintBottom_toTopOf="@+id/bounceButtonSearch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

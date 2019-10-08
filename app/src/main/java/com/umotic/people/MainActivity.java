@@ -1,7 +1,10 @@
 package com.umotic.people;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -10,13 +13,26 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.umotic.people.Bean.User;
 import com.umotic.people.Utils.GpsUtils;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
@@ -32,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
     private final int ACCESS_TO_POSITION_REQUEST = 1;
     private boolean isContinue = false;
     private boolean isGPS = false;
+    private Toolbar toolbar;
+    private Drawer drawerBuilder;
+    private PrimaryDrawerItem profile, settings;
+    AccountHeader headerResult;
 
 
 
@@ -47,10 +67,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         //Variable references
         userPositionManager = new UserPositionManager(this);
         pulsatorLayout = (PulsatorLayout)findViewById(R.id.pulseView);
         pulsatorLayoutOver = (PulsatorLayout)findViewById(R.id.pulseViewOver);
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeightDp(250)
+                .withHeaderBackground(R.drawable.gang)
+                .addProfiles(new ProfileDrawerItem().withName("Federico").withEmail("mail@mail.com"))
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean current) {
+                        return false;
+                    }
+                }).build();
+
+        profile = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.profile);
+        settings = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.settings);
+        drawerBuilder = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withAccountHeader(headerResult)
+                .addDrawerItems(profile, settings)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        return false;
+                    }
+                })
+                .build();
+        toolbar = (Toolbar)findViewById(R.id.toolbarMain);
+        setSupportActionBar(toolbar);
+
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_drawer);
+
 
         if(!checkLocationPermission()){
             requestGpsPermission();
@@ -201,6 +255,18 @@ public class MainActivity extends AppCompatActivity {
     //When users have been found, the animation stops
     private void onUsersFound() {    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerBuilder.openDrawer();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
 
 

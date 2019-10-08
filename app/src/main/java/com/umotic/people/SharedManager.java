@@ -40,8 +40,10 @@ public class SharedManager {
             String sex = "";
             if(value[4].contentEquals("0")){
                 sex="M";
-            }else{
+            }else if(value[4].contentEquals("1")){
                 sex="F";
+            }else if(value[4].contentEquals("2")){
+                sex="Not Specified";
             }
             editor.putString("Sex", sex);
         }

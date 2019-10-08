@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,6 +28,7 @@ public class SexSelectorActivity extends AppCompatActivity {
     PageIndicatorView pageIndicatorView;
     Timer T;
     String name, surname, email, password;
+    Button skipSex;
 
 
 
@@ -48,12 +50,30 @@ public class SexSelectorActivity extends AppCompatActivity {
         goToAgeButton = findViewById(R.id.gotoage);
         sexMessage = (TextView)findViewById(R.id.sexSelectorMessage);
         pageIndicatorView = (PageIndicatorView)findViewById(R.id.sexIndicatorView);
+        skipSex = (Button)findViewById(R.id.btnSkipSex);
+
 
         //getting data from RegistrationActivity
         name = getIntent().getStringExtra("userName");
         surname = getIntent().getStringExtra("userSurname");
         email = getIntent().getStringExtra("userMail");
         password = getIntent().getStringExtra("userPassword");
+
+
+        skipSex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                T.cancel();
+                //passing data to AgeActivity
+                goToAgeSelectorActivity.putExtra("userMail", email)
+                        .putExtra("userPassword", password.toString())
+                        .putExtra("userName", name.toString())
+                        .putExtra("userSurname", surname.toString())
+                        .putExtra("userSex", 2);
+                startActivity(goToAgeSelectorActivity);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+            }
+        });
 
         goToAgeButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -26,6 +26,7 @@
     <string name="APIlogin">Or you can sign in with:</string>
     <string name="message_registration">If you don\'t have an account, create it HERE!</string>
     <string name="sign_up">Sign Up</string>
+    <string name="skip">Skip</string>
 
     <!-- Useremo questo tipo di array per creare dei messaggi targhettizzati per ogni range di età (non urgente) -->
     <string name="seek_kid">18-</string>
@@ -85,5 +86,19 @@
         <item>@string/seek_adult_old</item>
         <item>@string/seek_old</item>
     </string-array>
+
+    <!-- HTTP REQUEST STRINGS -->
+    <string name="name_request">user_name</string>
+    <string name="surname_request">user_surname</string>
+    <string name="password_request">user_password</string>
+    <string name="sex_request">user_sex</string>
+    <string name="mail_request">user_mail</string>
+    <string name="age_request">user_age</string>
+
+
+    <!-- LATERAL MENU ITEMS -->
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+
 
 </resources>

@@ -143,7 +143,6 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         DatabaseReference databaseReference = database.getReference().child("User");
         user.setLatitude(String.valueOf(location.getLatitude()));
         user.setLongitude(String.valueOf(location.getLongitude()));
-        //TODO: capire come si prende il nome della città
         user.setCityName("Torremaggiore");
         user.setUserAge(22+"");
         user.setUserSex("m".toUpperCase());

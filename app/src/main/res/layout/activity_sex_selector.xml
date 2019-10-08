@@ -85,4 +85,19 @@
         app:layout_constraintTop_toBottomOf="@+id/sexPagerSelector"
         app:layout_constraintVertical_bias="0.2" />
 
+    <Button
+        android:id="@+id/btnSkipSex"
+        android:layout_width="85dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/large_rounded_button_positive"
+        android:text="@string/skip"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sexIndicatorView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sexSelectorMessage" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
