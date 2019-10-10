@@ -2,6 +2,7 @@ package com.umotic.people;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -87,6 +88,9 @@ public class AgeSelectorActivity extends AppCompatActivity {
                 signUp();
                 startActivity(goToMainActivity);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+
+                SexSelectorActivity.sex.finish();
+                finish();
             }
         });
 
@@ -196,7 +200,7 @@ public class AgeSelectorActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(AgeSelectorActivity.this, "Register failed " + error.toString(), Toast.LENGTH_LONG);
                 Log.d("Error Volley", error.toString());
-                startActivity(goToLoginActivity);
+                //startActivity(goToLoginActivity);
             }
         })
         {

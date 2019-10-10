@@ -13,6 +13,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
@@ -106,6 +109,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         String lat = sharedPref.getString("lat", "0");
         this.googleMap=googleMap;
 
+
+
         googleMap.setMaxZoomPreference(16);
         googleMap.setMapType(1);
 
@@ -116,13 +121,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             googleMap.setMyLocationEnabled(true);
         }
 
-
-        //Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
         LatLng pos = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
 
+        Log.d("Position", lat + " " + lon);
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(pos)
+                .zoom(15)
+                .build();
+
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        /*
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(pos, 15);
         googleMap.animateCamera(location);
-
+*/
 
         //if userLocationEnable is false, can use custom marker
         if (!googleMap.isMyLocationEnabled()) {
@@ -133,7 +146,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
 
-        //Toast.makeText(getContext(), "THREAD not custom-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
 
         googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override

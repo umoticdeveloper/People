@@ -61,22 +61,41 @@
         android:layout_height="wrap_content"
         android:text="@string/remember_me" />
 
-    <Button
-        android:id="@+id/btnSignInLogin"
+    <LinearLayout
+        android:id="@+id/buttonLayoutLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/large_rounded_button_positive"
-        android:text="@string/action_sign_in_short" />
+        android:weightSum="10"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnSignUpLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/large_rounded_button_negative"
-        android:text="@string/sign_up"
-        android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnSignUpLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/large_rounded_button_negative"
+            android:text="@string/sign_up"
+             />
+
+        <Button
+            android:id="@+id/btnSignInLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/large_rounded_button_positive"
+            android:text="@string/action_sign_in_short" />
+
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/umoticGroupLogin"

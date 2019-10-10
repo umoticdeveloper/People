@@ -57,6 +57,7 @@ public class SharedManager {
     }
 
 
+
     public User getUserInfoShared (){
 
         User user = new User();

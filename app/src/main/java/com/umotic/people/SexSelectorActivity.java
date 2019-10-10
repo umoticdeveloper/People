@@ -1,5 +1,6 @@
 package com.umotic.people;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ public class SexSelectorActivity extends AppCompatActivity {
     Timer T;
     String name, surname, email, password;
     Button skipSex;
-
+    public static Activity sex;
 
 
     /**
@@ -41,6 +42,7 @@ public class SexSelectorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sex_selector);
+        sex = this;
 
         //Variable references
         goToAgeSelectorActivity = new Intent(this, AgeSelectorActivity.class);
@@ -102,8 +104,6 @@ public class SexSelectorActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void run() {
-                       //Log.d("SESE",""+pageIndicatorView.getSelection());
-
                         if(pageIndicatorView.getSelection() == 0){
                             sexMessage.setText(R.string.sex_selector_message_guy);
                         } else {
