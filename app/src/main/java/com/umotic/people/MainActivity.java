@@ -1,18 +1,24 @@
 package com.umotic.people;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -57,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
     private PrimaryDrawerItem homeButtonDrawer, profileButtonDrawer, settingsButtonDrawer, logoutButtonDrawer;
     AccountHeader headerResult;
     Intent logout;
+    SharedManager userData;
+    int sexColor;
+    Fragment profileFragment;
+    FragmentTransaction transaction;
+    FragmentManager fragmentManager;
+
 
 
 
@@ -80,11 +92,19 @@ public class MainActivity extends AppCompatActivity {
         pulsatorLayout = (PulsatorLayout)findViewById(R.id.pulseView);
         pulsatorLayoutOver = (PulsatorLayout)findViewById(R.id.pulseViewOver);
         logout = new Intent(this, LoginActivity.class);
+        userData = new SharedManager(getApplicationContext());
+        profileFragment = new ProfileFragment();
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        
+
+
+
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeightDp(250)
                 .withHeaderBackground(R.drawable.gang)
-                .addProfiles(new ProfileDrawerItem().withName("Federico").withEmail("mail@mail.com"))
+                .addProfiles(new ProfileDrawerItem().withName(userData.getUserInfoShared().getName()).withEmail(userData.getUserInfoShared().getMail()))
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
@@ -97,7 +117,16 @@ public class MainActivity extends AppCompatActivity {
         logoutButtonDrawer = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.logout);
         homeButtonDrawer = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.home);
 
+        if(userData.getUserInfoShared().getUserSex().equalsIgnoreCase("F")){
+            sexColor = getColor(R.color.girldrawer);
+        }else if(userData.getUserInfoShared().getUserSex().equalsIgnoreCase("M")){
+            sexColor = getColor(R.color.maledrawer);
+        }else {
+            sexColor = getColor(R.color.bglightcolor);
+        }
+
         drawerBuilder = new DrawerBuilder()
+                .withSliderBackgroundColor(sexColor)
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withAccountHeader(headerResult)
@@ -110,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
                             //replace layout with fragment
                         }else if(position == 2) { //PROFILE
                             //replace layout with fragment
+                            Log.d("Profile", "selected");
+                            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                            ProfileFragment fragment = new ProfileFragment();
+                            fragment.setRetainInstance(true);
+                            transaction.add(R.id.fragment_container,fragment);
+                            transaction.addToBackStack("ProfileFragment");
+                            transaction.commit();
+                            getSupportFragmentManager().executePendingTransactions();
                         }else if(position == 3) { //SETTINGS
                             //replace layout with fragment
                         }else if(position == 5) { //LOGOUT
@@ -123,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+
         toolbar = (Toolbar)findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
 
@@ -226,7 +264,6 @@ public class MainActivity extends AppCompatActivity {
     //ON CLICK CUSTOM METHOD
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void didTapButton(View view) {
-
         //Check if GPS is on or off
         new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
             @Override

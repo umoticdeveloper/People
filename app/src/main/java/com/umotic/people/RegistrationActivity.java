@@ -61,7 +61,7 @@ public class RegistrationActivity extends AppCompatActivity {
         gotToSexActivity = new Intent(this, SexSelectorActivity.class);
         goToLoginActivity = new Intent(this, LoginActivity.class);
         buttonLayout = (LinearLayout)findViewById(R.id.buttonLayoutRegistration);
-        final Animation animScale = AnimationUtils.loadAnimation(this, R.anim.resize_button);
+        //final Animation animScale = AnimationUtils.loadAnimation(this, R.anim.resize_button);
 
 
 

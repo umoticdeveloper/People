@@ -44,7 +44,7 @@
         <!-- MAIN ACTIVITY: contains Map and user search button -->
         <activity
             android:name=".MainActivity"
-            android:theme="@style/MainTheme.NoActionBar"/>
+            android:theme="@style/MainTheme.NoActionBar.Light"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

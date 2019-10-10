@@ -6,80 +6,101 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <include
-        android:id="@+id/toolbarMain"
-        layout="@layout/toolbar"></include>
 
-    <!--This view is used to create the pulse animation around the button for user search-->
-
-    <pl.bclogic.pulsator4droid.library.PulsatorLayout
-        android:id="@+id/pulseView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="bottom|center|center_horizontal|fill_horizontal|center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentMap"
-        app:pulse_color="@color/userFound"
-        app:pulse_count="6"
-        app:pulse_duration="5000"
-        app:pulse_interpolator="AccelerateDecelerate"
-        app:pulse_repeat="0"
-        app:pulse_startFromScratch="false" />
-
-    <pl.bclogic.pulsator4droid.library.PulsatorLayout
-        android:id="@+id/pulseViewOver"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="bottom|center|center_horizontal|fill_horizontal|center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentMap"
-        app:pulse_color="@color/userFoundDarker"
-        app:pulse_count="6"
-        app:pulse_duration="8000"
-        app:pulse_interpolator="AccelerateDecelerate"
-        app:pulse_repeat="0"
-        app:pulse_startFromScratch="false" />
-
-    <!--This is the user search button in the main activity-->
-    <Button
-        android:id="@+id/bounceButtonSearch"
-        android:layout_width="92dp"
-        android:layout_height="92dp"
-        android:layout_marginStart="159dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/roundedbutton"
-        android:elevation="10dp"
-        android:onClick="didTapButton"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!--This fragment is replace with the map-->
-    <fragment
-        android:id="@+id/fragmentMap"
-        android:name="com.umotic.people.MapFragment"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/bounceButtonSearch"
+        android:id="@+id/main_layout"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/toolbarMain"
+            layout="@layout/toolbar"></include>
+
+        <!--This view is used to create the pulse animation around the button for user search-->
+
+        <pl.bclogic.pulsator4droid.library.PulsatorLayout
+            android:id="@+id/pulseView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="bottom|center|center_horizontal|fill_horizontal|center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentMap"
+            app:pulse_color="@color/userFound"
+            app:pulse_count="6"
+            app:pulse_duration="5000"
+            app:pulse_interpolator="AccelerateDecelerate"
+            app:pulse_repeat="0"
+            app:pulse_startFromScratch="false" />
+
+        <pl.bclogic.pulsator4droid.library.PulsatorLayout
+            android:id="@+id/pulseViewOver"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="bottom|center|center_horizontal|fill_horizontal|center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentMap"
+            app:pulse_color="@color/userFoundDarker"
+            app:pulse_count="6"
+            app:pulse_duration="8000"
+            app:pulse_interpolator="AccelerateDecelerate"
+            app:pulse_repeat="0"
+            app:pulse_startFromScratch="false" />
+
+        <!--This is the user search button in the main activity-->
+        <Button
+            android:id="@+id/bounceButtonSearch"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
+            android:layout_marginStart="159dp"
+            android:layout_marginEnd="160dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/roundedbutton"
+            android:elevation="10dp"
+            android:onClick="didTapButton"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!--This fragment is replace with the map-->
+        <fragment
+            android:id="@+id/fragmentMap"
+            android:name="com.umotic.people.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/bounceButtonSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
