@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
             sexColor = getColor(R.color.bglightcolor);
         }
 
+
+        //TODO: GESTIRE TUTTO TRAMITE FRAGMENT, IN QUEST0 MODO NON CI SARÀ IL BISOGNO DI CREARE OGNI VOLTA UN NUOVO MENU LATERALE PER OGNI ACTIVITY E UNA TOOLBAR
         drawerBuilder = new DrawerBuilder()
                 .withSliderBackgroundColor(sexColor)
                 .withActivity(this)
@@ -266,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //TODO : contiene un thread fatto a tromba per simulare la ricerca
+    //contiene un thread fatto a tromba per simulare la ricerca
     //ON CLICK CUSTOM METHOD
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void didTapButton(View view) {

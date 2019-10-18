@@ -24,6 +24,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+
+//TODO: GESTIRE TUTTO TRAMITE FRAGMENT
 public class SettingsActivity extends AppCompatActivity {
 
     //Variable definition

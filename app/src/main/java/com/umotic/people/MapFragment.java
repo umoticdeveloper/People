@@ -85,7 +85,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    //TODO : il ciclo funziona ma non riesco ad animare i marker
+    //il ciclo funziona ma non riesco ad animare i marker
     public static void test() {
 
         new Thread(new Runnable() {

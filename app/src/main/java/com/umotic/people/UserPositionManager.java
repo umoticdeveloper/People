@@ -56,8 +56,6 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
     @Override
     public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
             // Permission is not granted
             // Should we show an explanation?
             //showAlert_2();
@@ -117,8 +115,6 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
                 .setFastestInterval(FASTEST_INTERVAL);
         // Request location updates
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
             //                                          int[] grantResults)
@@ -148,7 +144,6 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         user.setUserSex("m".toUpperCase());
         user.setUserIsSpecialGuest(false);
         user.setLastTimePositionUpdate(Calendar.getInstance().getTime());
-        //TODO: CAPIRE SE E' MEGLIO USARE UN DATAPROVIDER O LASCIARE COSI' COM'E' PERCHE' COL DP CREA A LOOP TANTI UTENTI OGNI VOLTA CHE CAMBIA LA POSIZIONE.
         //dpUserInfo.insertUserInfo(user);
         databaseReference.setValue(user);
     }
