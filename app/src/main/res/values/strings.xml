@@ -84,15 +84,33 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string-array name="kid_age_random_message">
-
-    </string-array>
+    <string name="title_activity_settings">Settings</string>
 
 
     <!-- EXIT MESSAGE DIALOG -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+
+    <!-- Preference Titles -->
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!-- Messages Preferences -->
+    <string-array name="kid_age_random_message">
+
+    </string-array>
     <string-array name="young_age_random_message">
 
     </string-array>
+
+    <!-- Sync Preferences -->
     <string-array name="adult_age_random_message">
 
     </string-array>
@@ -102,8 +120,6 @@
     <string-array name="old_age_random_message">
 
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="ageSeekBar">
         <item>@string/seek_kid</item>
         <item>@string/seek_young</item>

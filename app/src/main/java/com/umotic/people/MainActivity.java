@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,12 +63,13 @@ public class MainActivity extends AppCompatActivity {
     private Drawer drawerBuilder;
     private PrimaryDrawerItem homeButtonDrawer, profileButtonDrawer, settingsButtonDrawer, logoutButtonDrawer;
     AccountHeader headerResult;
-    Intent logout;
+    Intent logout, settings;
     SharedManager userData;
     int sexColor;
     Fragment profileFragment;
     FragmentTransaction transaction;
     FragmentManager fragmentManager;
+    public static Activity mainActivity;
 
 
 
@@ -84,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LoginActivity.loginActivity.finish();
+        mainActivity = this;
+
 
 
 
@@ -96,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         profileFragment = new ProfileFragment();
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
+        settings = new Intent(this, SettingsActivity.class);
         
 
 
@@ -149,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                             getSupportFragmentManager().executePendingTransactions();
                         }else if(position == 3) { //SETTINGS
                             //replace layout with fragment
+                            startActivity(settings);
                         }else if(position == 5) { //LOGOUT
                             SharedPreferences checkBoxPref = getSharedPreferences("rememberMe", MODE_PRIVATE);
                             SharedPreferences.Editor editorCheckBox = checkBoxPref.edit();
