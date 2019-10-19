@@ -64,52 +64,57 @@
     <LinearLayout
         android:id="@+id/buttonLayoutLogin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="10"
-        android:orientation="horizontal">
+        android:layout_height="144dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
 
 
-        <Button
-            android:id="@+id/btnSignUpLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/large_rounded_button_negative"
-            android:text="@string/sign_up"
-             />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/btnSignInLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/large_rounded_button_positive"
-            android:text="@string/action_sign_in_short" />
+            <Button
+                android:id="@+id/btnSignInLogin"
+                android:layout_width="286dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="28dp"
+                android:layout_weight="9"
+                android:background="@drawable/large_rounded_button_positive"
+                android:text="@string/action_sign_in_short"
+                app:layout_constraintBottom_toTopOf="@+id/btnSignUpLogin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/btnSignUpLogin"
+                android:layout_width="286dp"
+                android:layout_height="38dp"
+
+                android:layout_marginTop="88dp"
+                android:layout_weight="9"
+                android:background="@drawable/large_rounded_button_negative"
+                android:text="@string/sign_up"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.492"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
-
 
 
     <TextView
         android:id="@+id/umoticGroupLogin"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="181dp"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
         android:gravity="bottom"
         android:text="@string/umoticGroup" />
-
-
-
-
-
 
 
 </LinearLayout>

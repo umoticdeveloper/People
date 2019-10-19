@@ -1,37 +1,14 @@
 package com.umotic.people;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.textfield.TextInputLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -62,8 +39,6 @@ public class RegistrationActivity extends AppCompatActivity {
         goToLoginActivity = new Intent(this, LoginActivity.class);
         buttonLayout = (LinearLayout)findViewById(R.id.buttonLayoutRegistration);
         //final Animation animScale = AnimationUtils.loadAnimation(this, R.anim.resize_button);
-
-
 
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
@@ -112,9 +87,5 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onPause();
         finish();
     }
-
-
-
-
 
 }

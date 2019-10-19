@@ -1,25 +1,11 @@
 package com.umotic.people;
 
-import androidx.annotation.ColorRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -30,7 +16,17 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -41,11 +37,11 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.umotic.people.Bean.User;
 import com.umotic.people.Utils.GpsUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 
@@ -192,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //The position tracking stops only when the app is closed
+    //si, ma.. vedremo
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -308,6 +305,8 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibration(true);
         }
+
+        writeUserPosition();
         startButtonAnim(bounceButtonSearch);
         getWorldPosition();
     }

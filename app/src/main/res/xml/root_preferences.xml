@@ -14,8 +14,7 @@
   ~ limitations under the License.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/messages_header">
 
@@ -26,8 +25,6 @@
 
         <ListPreference
             app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
             app:key="reply"
             app:title="@string/reply_title"
             app:useSimpleSummaryProvider="true" />

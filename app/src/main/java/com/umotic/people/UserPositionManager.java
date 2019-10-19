@@ -9,17 +9,15 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+
 import androidx.core.app.ActivityCompat;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.umotic.people.Bean.User;
-import java.util.Calendar;
 
 
 
@@ -128,12 +126,9 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
     }
 
 
-    /**
-     * PRESA IN CARICO DA FEDERICO SCHIAVONE: GESTIONE DATI CON FIREBASE
-     * @param location
-     */
     private void dbUserUpdater(Location location) {
         //TODO : write user position in DB
+        /*
         FirebaseApp.initializeApp(context);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference().child("User");
@@ -146,6 +141,8 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
         user.setLastTimePositionUpdate(Calendar.getInstance().getTime());
         //dpUserInfo.insertUserInfo(user);
         databaseReference.setValue(user);
+        */
+
     }
 
 
@@ -156,11 +153,17 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
 
-        //Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-        // You can now create a LatLng Object for use with maps
-        //latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        // now we can create a LatLng Object for use with maps
+        // latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        // Actually google maps use self gps info
+        // this class has been made 4 fetch data or use custom maps elements like mooving arrow like in MapFragment, pins ecc
+
         sharedLastUserPosition(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()));
+
+        //Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+
         dbUserUpdater(location);
+
     }
 
 

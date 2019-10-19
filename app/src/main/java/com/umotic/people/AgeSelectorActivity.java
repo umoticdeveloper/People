@@ -1,9 +1,5 @@
 package com.umotic.people;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,23 +9,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class AgeSelectorActivity extends AppCompatActivity {
@@ -93,7 +80,12 @@ public class AgeSelectorActivity extends AppCompatActivity {
                 String[] values = {name, surname, email, password, sex + "", ageRange};
                 new SharedManager(getApplicationContext()).writeInfoShared(values);
 
-                signUp();
+                try {
+                    signUp();
+                } catch (JSONException e) {
+                    Toast.makeText(AgeSelectorActivity.this, "Error in Request", Toast.LENGTH_SHORT).show();
+                    ;
+                }
                 startActivity(goToMainActivity);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 
@@ -250,7 +242,7 @@ public class AgeSelectorActivity extends AppCompatActivity {
      */
 
 
-    private void signUp() {
+    private void signUp() throws JSONException {
 
         final String name = this.name.trim();
         final String surname = this.surname.trim();
@@ -259,51 +251,21 @@ public class AgeSelectorActivity extends AppCompatActivity {
         final String ageRange = this.ageRange;
         final String sex = new SharedManager(getApplicationContext()).getUserInfoShared().getUserSex();
 
+        /*
+	1 	ID (AI)
+	2	user_sex
+	3	user_age
+	4	is_special_guest
+	5	user_latitude
+	6	user_longitude
+	7	user_name
+	8	user_surname
+	9	user_password
+	10	user_mail
+*/
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("Response", response);
-                try{
-                    JSONObject jsonObject = new JSONObject(response);
+        new BKGWorker().doInBackground("http://peopleapp.altervista.org/DbPhpFiles/InsertUser.php");
 
-                    Log.d("Json Obj Response", jsonObject.toString());
-                    String success = jsonObject.getString("success");
-
-                    if (success.equals("1")) {
-                        Toast.makeText(AgeSelectorActivity.this, "Register success", Toast.LENGTH_LONG);
-                    }
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(AgeSelectorActivity.this, "Register failed " + e.toString(), Toast.LENGTH_LONG);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AgeSelectorActivity.this, "Register failed " + error.toString(), Toast.LENGTH_LONG);
-                Log.d("Error Volley", error.toString());
-                //startActivity(goToLoginActivity);
-            }
-        })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("user_name", name);
-                params.put("user_surname", surname);
-                params.put("user_mail", email);
-                params.put("user_password", password);
-                params.put("user_sex", sex);
-                //params.put("user_age", ageRange);
-                Log.d("params", name + surname + email + password + sex + ageRange);
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-        Log.d("RQ", stringRequest.toString());
 
     }
 
