@@ -35,7 +35,7 @@ public class BKGWorker extends AsyncTask<String, Void, String> {
 
     OkHttpClient client = new OkHttpClient();
 
-    String result = "1";
+    String result = "ERROR";
 
     @Override
     protected String doInBackground(String... strings) {
@@ -43,8 +43,9 @@ public class BKGWorker extends AsyncTask<String, Void, String> {
             POST(strings[0], strings[1]);
         } catch (IOException e) {
             e.printStackTrace();
+            this.result = "1";
         }
-        return null;
+        return result;
     }
 
 
@@ -60,7 +61,9 @@ public class BKGWorker extends AsyncTask<String, Void, String> {
             return result;
         }
 
-
     }
 
+    public String getter() {
+        return this.result;
+    }
 }

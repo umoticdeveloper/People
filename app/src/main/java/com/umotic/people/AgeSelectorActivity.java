@@ -18,6 +18,8 @@ import com.warkiz.widget.SeekParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.ExecutionException;
+
 
 public class AgeSelectorActivity extends AppCompatActivity {
 
@@ -83,18 +85,20 @@ public class AgeSelectorActivity extends AppCompatActivity {
                 try {
                     if (signUp()) {
                         startActivity(goToMainActivity);
-                    } else {
-
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                        SexSelectorActivity.sex.finish();
                         finish();
-                        return;
+
+                    } else {
+                        startActivity(goToLoginActivity);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                        SexSelectorActivity.sex.finish();
+                        finish();
                     }
-                } catch (JSONException e) {
+                } catch (JSONException | ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 
-                SexSelectorActivity.sex.finish();
-                finish();
             }
         });
 
@@ -246,7 +250,7 @@ public class AgeSelectorActivity extends AppCompatActivity {
      */
 
     // TODO non mi chiedere perchè, funziona solo con int, con stringhe da errore sql, per vedere il log cerca 'RESPONSE' nel filtro log 0 è corretto
-    private boolean signUp() throws JSONException {
+    private boolean signUp() throws JSONException, ExecutionException, InterruptedException {
 
         boolean result;
 
@@ -270,21 +274,21 @@ public class AgeSelectorActivity extends AppCompatActivity {
 	10	user_mail
 */
         JSONObject json = new JSONObject();
-        json.put("user_sex", "3");
-        json.put("user_age", ageRange.substring(1, ageRange.length() - 1) + "");
-        json.put("is_special_guest", "0");
+        json.put("user_sex", "'" + sex + "'");
+        json.put("user_age", "'" + ageRange.substring(1, ageRange.length() - 1) + "'");
+        json.put("is_special_guest", "'F'");
         json.put("user_latitude", "0");
         json.put("user_longitude", "0");
-        json.put("user_name", name + "");
-        json.put("user_surname", surname);
-        json.put("user_password", password);
-        json.put("user_mail", email);
+        json.put("user_name", "'" + name + "'");
+        json.put("user_surname", "'" + surname + "'");
+        json.put("user_password", "'" + password + "'");
+        json.put("user_mail", "'" + email + "'");
 
         BKGWorker bkgw = new BKGWorker();
 
-        bkgw.execute("http://peopleapp.altervista.org/DbPhpFiles/InsertUser.php", json.toString());
-        Log.i("TRE", bkgw.result);
-        if (bkgw.result == "0") {
+        String response = bkgw.execute("http://peopleapp.altervista.org/DbPhpFiles/InsertUser.php", json.toString()).get();
+
+        if ("0".equals(response)) {
             result = true;
         } else {
             result = false;
