@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -90,6 +91,7 @@ public class AgeSelectorActivity extends AppCompatActivity {
                         finish();
 
                     } else {
+                        Toast.makeText(AgeSelectorActivity.this, "Account già presente, prova a fare login!", Toast.LENGTH_SHORT).show();
                         startActivity(goToLoginActivity);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
                         SexSelectorActivity.sex.finish();
@@ -249,7 +251,6 @@ public class AgeSelectorActivity extends AppCompatActivity {
      *
      */
 
-    // TODO non mi chiedere perchè, funziona solo con int, con stringhe da errore sql, per vedere il log cerca 'RESPONSE' nel filtro log 0 è corretto
     private boolean signUp() throws JSONException, ExecutionException, InterruptedException {
 
         boolean result;
@@ -288,10 +289,13 @@ public class AgeSelectorActivity extends AppCompatActivity {
 
         String response = bkgw.execute("http://peopleapp.altervista.org/DbPhpFiles/InsertUser.php", json.toString()).get();
 
+        Log.i("CONNECTION_INFO", response);
+
         if ("0".equals(response)) {
             result = true;
         } else {
             result = false;
+            Log.e("CONNECTION_ERROR", response);
         }
         return result;
     }

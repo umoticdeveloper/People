@@ -2,10 +2,11 @@ package com.umotic.people;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.umotic.people.Bean.User;
 
 public class SharedManager {
-    SharedPreferences userDataShared;
+    private SharedPreferences userDataShared;
 
     SharedManager(Context c) {
         userDataShared = c.getApplicationContext().getSharedPreferences("UserData", 0);

@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -169,6 +167,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //Toast.makeText(getContext(), "THREAD-> Lat: " + lat + " Long: " + lon, Toast.LENGTH_SHORT).show();
         if (positions != null && positions.size() > 1) {
             for (String position : positions) {
+                Log.i("POSITIONSDEBUGG", positions.size() + "");
                 String[] worldposition = position.split(",");
                 //Toast.makeText(, "mostrando pose", Toast.LENGTH_SHORT).show();
 
@@ -176,7 +175,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 if ("M".equals(worldposition[2])) {
                     //Log.d("MALE", "famale");
-                    googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsM)).position(wPos).anchor(0.5f, 0.5f).alpha(1f).flat(true));
+                    //TODO: usare il marker commentato quello attuale è di prova
+                    //googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(gpsM)).position(wPos).anchor(0.5f, 0.5f).alpha(1f).flat(true));
+                    googleMap.addMarker(new MarkerOptions().position(wPos).icon(BitmapDescriptorFactory.defaultMarker()).title("Posizione di un ghei"));
                 }
 
                 if ("F".equals(worldposition[2])) {
@@ -249,8 +250,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     //Definisce le posizioni da attribuire ai marker, chiamato dal main(sprite colorati)
-    public static void fillWorldLPositions() {
+    public static void fillWorldLPositions(ArrayList<String> worldPosition) {
         positions.clear();
+        positions = worldPosition;
+
 
         //Ferrarese
         for(int a =1;a<(new Random().nextInt(15 - 1) + 4);a++) {
@@ -270,9 +273,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         for(int a =1;a<(new Random().nextInt(10 - 1) + 4);a++) {
             positions.add("41.11148,16.8554,G");
         }
+
+
     }
-
-
 
 
 

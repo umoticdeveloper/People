@@ -1,11 +1,10 @@
 package com.umotic.people;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,16 +12,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -107,51 +102,84 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Check data for login from DB
-                startActivity(goToMain);
-                finish();
+
+                try {
+                    if (logIn()) {
+                        startActivity(goToMain);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Mmm sembri nuovo, clicca su sign up!", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+
             }
         });
 
     }
 
 
+    private boolean logIn() throws JSONException, ExecutionException, InterruptedException {
+
+        boolean result;
+
+        final String email = this.email.getText().toString();
+        final String password = this.password.getText().toString();
+
+        /*
+	1 	ID (AI)
+	2	user_sex
+	3	user_age
+	4	is_special_guest
+	5	user_latitude
+	6	user_longitude
+	7	user_name
+	8	user_surname
+	9	user_password
+	10	user_mail
+*/
+        JSONObject json = new JSONObject();
+
+        json.put("user_password", "'" + password + "'");
+        json.put("user_mail", "'" + email + "'");
+
+        BKGWorker bkgw = new BKGWorker();
+
+        String response = bkgw.execute("http://peopleapp.altervista.org/DbPhpFiles/GetUserData.php", json.toString()).get();
+        JSONObject jresponse = new JSONObject(response);
+        String loginResponse = jresponse.getString("response");
+
+        Log.i("CONNECTION_INFO_LOGIN", response);
+
+        if ("0".equals(loginResponse)) {
+
+            String sg = jresponse.getString("is_special_guest");
+            String name = jresponse.getString("user_name");
+            String surname = jresponse.getString("user_surname");
+            String sex = jresponse.getString("user_sex");
+            String ageRange = jresponse.getString("user_age");
+            String lon = jresponse.getString("user_longitude");
+            String lat = jresponse.getString("user_latitude");
 
 
+            String[] values = {name, surname, email, password, sex + "", ageRange};
+            new SharedManager(this).writeInfoShared(values);
+            new UserPositionManager(this).sharedLastUserPosition(lat, lon);
 
-    private void userLogin(){
-        usermail = email.getText().toString().trim();
-        passwordStr = password.getText().toString().trim();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.trim().equals("success")) {
-                            Toast.makeText(LoginActivity.this, "success", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "no success", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put(KEY_MAIL, usermail);
-                map.put(KEY_PASSWORD, passwordStr);
-                return map;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+            result = true;
+        } else {
+            result = false;
+            Log.e("CONNECTION_ERROR", response);
+        }
+        return result;
     }
-
 
 
 

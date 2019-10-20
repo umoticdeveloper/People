@@ -19,6 +19,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.umotic.people.Bean.User;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 
 public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
@@ -126,22 +130,34 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
     }
 
 
-    private void dbUserUpdater(Location location) {
-        //TODO : write user position in DB
+    private void dbUserUpdater(Location location) throws JSONException, ExecutionException, InterruptedException {
+
+        final String lat = location.getLatitude() + "";
+        final String lon = location.getLongitude() + "";
+        final String email = new SharedManager(context).getUserInfoShared().getMail();
         /*
-        FirebaseApp.initializeApp(context);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = database.getReference().child("User");
-        user.setLatitude(String.valueOf(location.getLatitude()));
-        user.setLongitude(String.valueOf(location.getLongitude()));
-        user.setCityName("Torremaggiore");
-        user.setUserAge(22+"");
-        user.setUserSex("m".toUpperCase());
-        user.setUserIsSpecialGuest(false);
-        user.setLastTimePositionUpdate(Calendar.getInstance().getTime());
-        //dpUserInfo.insertUserInfo(user);
-        databaseReference.setValue(user);
-        */
+	1 	ID (AI)
+	2	user_sex
+	3	user_age
+	4	is_special_guest
+	5	user_latitude
+	6	user_longitude
+	7	user_name
+	8	user_surname
+	9	user_password
+	10	user_mail
+*/
+        JSONObject json = new JSONObject();
+
+        json.put("user_mail", "'" + email + "'");
+        json.put("user_latitude", "'" + lat + "'");
+        json.put("user_longitude", "'" + lon + "'");
+
+        BKGWorker bkgw = new BKGWorker();
+
+        String response = bkgw.execute("http://peopleapp.altervista.org/DbPhpFiles/UpdateUserData.php", json.toString()).get();
+
+        Log.i("SET_POSITION", response);
 
     }
 
@@ -162,13 +178,21 @@ public class UserPositionManager implements GoogleApiClient.ConnectionCallbacks,
 
         //Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 
-        dbUserUpdater(location);
+        try {
+            dbUserUpdater(location);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
 
     //ultima posizione nota condivisa nelle shared
-    private void sharedLastUserPosition(String lat, String lon) {
+    public void sharedLastUserPosition(String lat, String lon) {
         SharedPreferences sharedPref =  ((Activity) context).getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("lon", lon);

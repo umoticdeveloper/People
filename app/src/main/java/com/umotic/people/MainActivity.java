@@ -39,8 +39,14 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.umotic.people.Utils.GpsUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
@@ -68,10 +74,6 @@ public class MainActivity extends AppCompatActivity {
     public static Activity mainActivity;
 
 
-
-
-
-
     /**
      * ###################################################################################### CALLBACK METHODS #############################################################################################################################
      *
@@ -84,9 +86,6 @@ public class MainActivity extends AppCompatActivity {
         LoginActivity.loginActivity.finish();
         mainActivity = this;
 
-
-
-
         //Variable references
         userPositionManager = new UserPositionManager(this);
         pulsatorLayout = (PulsatorLayout)findViewById(R.id.pulseView);
@@ -97,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         settings = new Intent(this, SettingsActivity.class);
-        
-
 
 
         headerResult = new AccountHeaderBuilder()
@@ -308,22 +305,82 @@ public class MainActivity extends AppCompatActivity {
 
         writeUserPosition();
         startButtonAnim(bounceButtonSearch);
-        getWorldPosition();
+        try {
+            getWorldPosition();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    private void getWorldPosition() {
+    private boolean getWorldPosition() throws JSONException, ExecutionException, InterruptedException {
         //TODO : select all position from DB
         //TODO : display the list of position in the map
-        MapFragment.fillWorldLPositions();
-        MapFragment.displayWorldLocations();
+
+        ArrayList<String> worldPosition = new ArrayList<String>();
+        boolean result;
+
+
+        final String email = new SharedManager(this).getUserInfoShared().getMail();
+
+        /*
+	1 	ID (AI)
+	2	user_sex
+	3	user_age
+	4	is_special_guest
+	5	user_latitude
+	6	user_longitude
+	7	user_name
+	8	user_surname
+	9	user_password
+	10	user_mail
+*/
+        JSONObject json = new JSONObject();
+        json.put("user_mail", "'" + email + "'");
+
+        BKGWorker bkgw = new BKGWorker();
+
+        String response = bkgw.execute("http://peopleapp.altervista.org/DbPhpFiles/GetPositions.php", json.toString()).get();
+        JSONObject jresponse = new JSONObject(response);
+        String loginResponse = jresponse.getString("response");
+        JSONArray world = jresponse.getJSONArray("world");
+
+
+        Log.i("CONNECTION_INFO_LOGIN", response);
+
+        if ("0".equals(loginResponse)) {
+
+
+            for (int a = 0; a < world.length(); a++) {
+
+                worldPosition.add(world.getString(a));
+                Log.i("WORLD-POSITION" + a, world.getString(a));
+            }
+
+            MapFragment.fillWorldLPositions(worldPosition);
+            MapFragment.displayWorldLocations();
+
+            result = true;
+        } else {
+            result = false;
+            Log.e("CONNECTION_ERROR", response);
+        }
+
+        return result;
+
     }
 
 
     //Get GPS user location
     //The position is refreshed only with user moves
     private void writeUserPosition() {
+
         userPositionManager.start();
+
     }
 
 
