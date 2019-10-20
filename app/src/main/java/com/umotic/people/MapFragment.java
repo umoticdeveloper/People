@@ -141,7 +141,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
 
-
+        //TODO : fix map Loop
+        /*
         googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
@@ -156,6 +157,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 displayWorldLocations();
             }
         });
+         */
     }
 
     //mostra sulla mappa gli sprite
