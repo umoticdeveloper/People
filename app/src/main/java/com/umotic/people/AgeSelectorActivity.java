@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +16,7 @@ import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class AgeSelectorActivity extends AppCompatActivity {
@@ -81,12 +81,16 @@ public class AgeSelectorActivity extends AppCompatActivity {
                 new SharedManager(getApplicationContext()).writeInfoShared(values);
 
                 try {
-                    signUp();
+                    if (signUp()) {
+                        startActivity(goToMainActivity);
+                    } else {
+
+                        finish();
+                        return;
+                    }
                 } catch (JSONException e) {
-                    Toast.makeText(AgeSelectorActivity.this, "Error in Request", Toast.LENGTH_SHORT).show();
-                    ;
+                    e.printStackTrace();
                 }
-                startActivity(goToMainActivity);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 
                 SexSelectorActivity.sex.finish();
@@ -241,13 +245,15 @@ public class AgeSelectorActivity extends AppCompatActivity {
      *
      */
 
+    // TODO non mi chiedere perchè, funziona solo con int, con stringhe da errore sql, per vedere il log cerca 'RESPONSE' nel filtro log 0 è corretto
+    private boolean signUp() throws JSONException {
 
-    private void signUp() throws JSONException {
+        boolean result;
 
-        final String name = this.name.trim();
-        final String surname = this.surname.trim();
-        final String email = this.email.trim();
-        final String password = this.password.trim();
+        final String name = this.name;
+        final String surname = this.surname;
+        final String email = this.email;
+        final String password = this.password;
         final String ageRange = this.ageRange;
         final String sex = new SharedManager(getApplicationContext()).getUserInfoShared().getUserSex();
 
@@ -263,10 +269,27 @@ public class AgeSelectorActivity extends AppCompatActivity {
 	9	user_password
 	10	user_mail
 */
+        JSONObject json = new JSONObject();
+        json.put("user_sex", "3");
+        json.put("user_age", ageRange.substring(1, ageRange.length() - 1) + "");
+        json.put("is_special_guest", "0");
+        json.put("user_latitude", "0");
+        json.put("user_longitude", "0");
+        json.put("user_name", name + "");
+        json.put("user_surname", surname);
+        json.put("user_password", password);
+        json.put("user_mail", email);
 
-        new BKGWorker().doInBackground("http://peopleapp.altervista.org/DbPhpFiles/InsertUser.php");
+        BKGWorker bkgw = new BKGWorker();
 
-
+        bkgw.execute("http://peopleapp.altervista.org/DbPhpFiles/InsertUser.php", json.toString());
+        Log.i("TRE", bkgw.result);
+        if (bkgw.result == "0") {
+            result = true;
+        } else {
+            result = false;
+        }
+        return result;
     }
 
 }
