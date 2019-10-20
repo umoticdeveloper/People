@@ -90,7 +90,11 @@ public class SexSelectorActivity extends AppCompatActivity {
                         .putExtra("userName", name.toString())
                         .putExtra("userSurname", surname.toString())
                         .putExtra("userSex", pageIndicatorView.getSelection());
+                startActivity(goToAgeSelectorActivity);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             }
+
+            ;
         });
     }
 
