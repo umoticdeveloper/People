@@ -1,33 +1,18 @@
 ## Welcome to People
 
-### Markdown
+this app is useful for monitoring the areas around you, to find groups of people and activities in progress in real time located on the map!
+it's up to you to decide whether to reach them or avoid them.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Privacy
 
-```markdown
-Syntax highlighted code block
+Relax, the whole system is absolutely anonymous (unless you want to)
+everything complies with the gdpr standard.
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/umoticdeveloper/People/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
 ### Support or Contact
+contact us at:
+umoticdevelopers@gmail.it
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## Jump on!
+you will surely know how to help us, glad to receive your support:
+https://github.com/umoticdeveloper/People
